@@ -11,12 +11,6 @@ network.insertEdge(from: "IV", to: "V", weight: 0.75)
 // Hookup dominant
 network.insertEdge(from: "V", to: "I", weight: 1)
 
-extension HarmonicNetwork {
-    func something() {
-        print("something")
-    }
-}
-
 func traverse(_ network: HarmonicNetwork, startingAt initial: String, visited: inout Set<String>) {
     print(initial, visited)
     let neighbors = network.neighbors(of: initial)
