@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "console-kit",
+        "repositoryURL": "https://github.com/jsbean/console-kit",
+        "state": {
+          "branch": "master",
+          "revision": "33dad2ed56196bf999ad10d433d34ee16c0ec9d2",
+          "version": null
+        }
+      },
+      {
         "package": "Math",
         "repositoryURL": "https://github.com/dn-m/Math",
         "state": {
@@ -44,6 +53,15 @@
           "branch": null,
           "revision": "75031850054ec660a028d6af130cfaeca7121d2d",
           "version": "0.23.3"
+        }
+      },
+      {
+        "package": "swift-log",
+        "repositoryURL": "https://github.com/apple/swift-log.git",
+        "state": {
+          "branch": null,
+          "revision": "f4240bf022a69815241a883c03645444b58ac553",
+          "version": "1.1.0"
         }
       }
     ]
