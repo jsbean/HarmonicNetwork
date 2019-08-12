@@ -1,0 +1,52 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Math",
+        "repositoryURL": "https://github.com/dn-m/Math",
+        "state": {
+          "branch": null,
+          "revision": "0bf8de5d353b7b7957cb2231395f6818bc575b47",
+          "version": "0.7.1"
+        }
+      },
+      {
+        "package": "Music",
+        "repositoryURL": "https://github.com/dn-m/Music",
+        "state": {
+          "branch": null,
+          "revision": "db4313f1954f1cc2c6bb0d4a0e2a2e5eec3d013b",
+          "version": "0.15.0"
+        }
+      },
+      {
+        "package": "NotationModel",
+        "repositoryURL": "https://github.com/dn-m/NotationModel",
+        "state": {
+          "branch": null,
+          "revision": "7050b4c8e80c48f758f1e808fcd02712a2085339",
+          "version": "0.8.0"
+        }
+      },
+      {
+        "package": "PerformanceTesting",
+        "repositoryURL": "https://github.com/dn-m/PerformanceTesting",
+        "state": {
+          "branch": null,
+          "revision": "7c73a60c4b69b981ac3dd4015cc26cea0e45c8c7",
+          "version": "0.4.0"
+        }
+      },
+      {
+        "package": "Structure",
+        "repositoryURL": "https://github.com/dn-m/Structure",
+        "state": {
+          "branch": null,
+          "revision": "75031850054ec660a028d6af130cfaeca7121d2d",
+          "version": "0.23.3"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
