@@ -89,7 +89,7 @@ The product of development phase 2 will be a graphical interface which displays 
 
 ### Phase 3:
 
-Development phase 3 will add sonic feedback will be added to product of development phase 2. Voice leading may be sub-optimal.
+Development phase 3 will add sonic feedback to the product of development phase 2. Voice leading may be sub-optimal at this point.
 
 ### Phase 4:
 
