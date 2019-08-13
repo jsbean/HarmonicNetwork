@@ -1,6 +1,6 @@
 # GENED 1080 Proposal: Harmonic Pathfinder
 
-I propose here to develop an interactive audio-visual tool which allows a student to incrementally build sequences of chords whose characteristcs resemble those of the Western Common Practice Preiod. This work piggybacks off of the [chord-sequence-chooser](https://github.com/bwetherfield), created by ES-25 TF Ben Wetherfield in the Fall of 2018.
+I propose here to develop an interactive audio-visual tool which allows a student to incrementally build sequences of chords whose characteristcs resemble those of the Western Common Practice Period. This work piggybacks off of the [chord-sequence-chooser](https://github.com/bwetherfield), created by ES-25 TF Ben Wetherfield in the Fall of 2018.
 
 The goal for this project is to offer the students a way into understanding the relationships between the harmonies that are inescapable in the sonic landscape of Harvard in 2019.
 
