@@ -38,7 +38,7 @@ Here are some preliminary mock-ups.
 
 Some disclaimers: 
 
-- All aspects for style are up for debate
+- All aspects of style are up for debate
 - All musical details here are _very_ roughly improvised and will be replaced with more–thoughtfully-researched / -"composed" values
 
 #### Harmonic Progression Model
