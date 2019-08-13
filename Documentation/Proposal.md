@@ -71,7 +71,7 @@ In the following example, inversions are added. Here, the **web view** starts to
 
 ## Development Roadmap
 
-This is a good deal of work, but it can be split up into several phases, each of which producing viable working products in their own right.
+This is a good deal of work, but it can be split up into several phases, each of which producing viable working products in its own right.
 
 ### Phase 0:
 
