@@ -113,4 +113,4 @@ Development phase 8 will add a basic MusicXML import option.
 
 ## Future Directions
 
-I can imagine extending this work to more advanced harmonic functions that may be out of scope for this course: secondary dominants, augmented sixth chords, Neopolitan chords, tritone substitution, etc.
+I can imagine extending this work to more advanced harmonic functions that may be out of scope for this course: secondary dominants, augmented sixth chords, Neapolitan chords, tritone substitution, etc.
