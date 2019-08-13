@@ -47,7 +47,7 @@ Here is a very rough example of the underlying model of the harmonic functions a
 
 `T` = [Tonic](https://en.wikipedia.org/wiki/Tonic_(music)), `D` = [Dominant](https://en.wikipedia.org/wiki/Dominant_(music)), `P` = [Predominant](https://en.wikipedia.org/wiki/Predominant_chord), `S` = [Submediant](https://en.wikipedia.org/wiki/Submediant), `M` = [Mediant](https://en.wikipedia.org/wiki/Mediant)
 
-![Increasing Function Complexity](img/increasing_function_complexity.pdf)
+![Increasing Function Complexity](img/increasing_function_complexity.png)
 
 The difference harmonic functions are given a unique color. They don't have to be these colors. They can be named differently.
 
@@ -57,17 +57,17 @@ Here is a rough visualization of what **manual mode** could look like. Each harm
 
 In this example, the node with the red outline is the node selected at each stage by the student. This could be an example of the **neighbor view**.
 
-![Manual mode](img/manual_mode.pdf)
+![Manual mode](img/manual_mode.png)
 
 #### Progressive Disclosure of Complexity
 
 In the following example, more instances of a given harmonic function can be revealed. Then, more harmonic functions are introduced. This could be a rough mock-up of the **web view**.
 
-![Increasing Function Instance Complexity](img/increasing_function_instance_complexity.pdf)
+![Increasing Function Instance Complexity](img/increasing_function_instance_complexity.png)
 
 In the following example, inversions are added. Here, the **web view** starts to get pretty tangled up. And it will only get worse! (That said, I like the idea of presenting varying degrees of complexity and comprehensibility (particularly if a new representation can mitigate the cognitive overload of the previous).
 
-![Increasing Inversion Complexity](img/increasing_inversion_complexity.pdf)
+![Increasing Inversion Complexity](img/increasing_inversion_complexity.png)
 
 ## Development Roadmap
 
