@@ -43,7 +43,7 @@ Some disclaimers:
 
 #### Harmonic Progression Model
 
-Here is a very rough example of the underlying model of the harmonic functions and the connections therebetween. 
+Here is a rough example of the underlying model of the harmonic functions and the connections therebetween. 
 
 `T` = [Tonic](https://en.wikipedia.org/wiki/Tonic_(music)), `D` = [Dominant](https://en.wikipedia.org/wiki/Dominant_(music)), `P` = [Predominant](https://en.wikipedia.org/wiki/Predominant_chord), `S` = [Submediant](https://en.wikipedia.org/wiki/Submediant), `M` = [Mediant](https://en.wikipedia.org/wiki/Mediant)
 
