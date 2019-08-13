@@ -28,9 +28,9 @@ Initially, a simple underlying model of the tonic-dominant relationship is prese
 
 I can imagine multiple view representations of the network:
 
-- **web** view, which shows all of the node connected clustered by harmonic function
+- **web** view, which shows all of the nodes clustered by harmonic function
 - **neighbor** view, which shows only the neighbors of a currently-selected node
-- **linear** view, which shows a left-to-right sequence a stacks of nodes of the same function
+- **linear** view, which shows a left-to-right sequence of stacks of nodes of the same function
 
 ## 🚧 Visual Mock-ups
 
