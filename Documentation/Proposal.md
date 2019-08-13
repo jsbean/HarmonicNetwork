@@ -89,7 +89,7 @@ The product of development phase 2 will be a graphical interface which displays 
 
 ### Phase 3:
 
-Development phase 3 will add sonic feedback will be added to product of development phase 2.
+Development phase 3 will add sonic feedback will be added to product of development phase 2. Voice leading may be sub-optimal.
 
 ### Phase 4:
 
@@ -110,3 +110,7 @@ Development phase 7 will add a basic western notation view of sequences.
 ### Phase 8:
 
 Development phase 8 will add basic MusicXML import option.
+
+## Future Directions
+
+I can imagine extending this work to more advanced harmonic functions that may be out of scope for this course: secondary dominants, augmented sixth chords, Neopolitan chords, tritone substitution, etc.
