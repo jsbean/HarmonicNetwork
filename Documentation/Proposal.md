@@ -1,16 +1,20 @@
-# GENED 1080 Proposal: Harmonic Pathinder
+# GENED 1080 Proposal: Harmonic Pathfinder
 
-I propose here to develop an interactive audio-visual tool which allows a student to incrementally build sequences of chords whose characteristcs resemble those of the Western Common Practice Era. This work piggy-backs off of the [chord-sequence-chooser](https://github.com/bwetherfield) by ES-25 TF Ben Wetherfield in the Fall of 2018.
+I propose here to develop an interactive audio-visual tool which allows a student to incrementally build sequences of chords whose characteristcs resemble those of the Western Common Practice Preiod. This work piggybacks off of the [chord-sequence-chooser](https://github.com/bwetherfield), created by ES-25 TF Ben Wetherfield in the Fall of 2018.
 
 The goal for this project is to offer the students a way into understanding the relationships between the harmonies that are inescapable in the sonic landscape of Harvard in 2019.
 
 ## Basic Overview
 
-This tool presents a [graph](https://en.wikipedia.org/wiki/Graph_theory)<sup>1</sup> representation of harmonic functions and the movement amongst them. Each node represents a single harmonic function (e.g., `I`, `ii6`, `V7`, etc.) and each edge represents the probability of moving from one to another (e.g., `V -> I` will be very likely while `V -> IV` will be non-existent).
+This tool presents a [graph](https://en.wikipedia.org/wiki/Graph_theory)<sup>1</sup> representation of harmonic functions and the movement amongst them. Each node represents an instance of a harmonic function (e.g., `I`, `ii6`, `V7`, etc.) and each edge represents the probability of moving from one to another (e.g., `V -> I` will be very likely while `V -> IV` will be non-existent).
 
 This graph representation is equivalent to a first-order Markov chain, and can be configured either by the tastes of those-in-charge, by values collected in previous research (e.g., in Table 5.8 of this [Harvard Bachelor's thesis](([Harvard Bachelor's Thesis](http://www.people.fas.harvard.edu/~msantill/Mauricio_Santillana/Teaching_files/Michaela_Tracy_thesis_Final.pdf))), [here](https://core.ac.uk/download/pdf/10596809.pdf), or [here](http://kern.ccarh.org/cgi-bin/ksbrowse?l=/users/craig/classical/bach/bhchorale)), or by way of analyzing other music and configuring the graph manually.
 
 Each harmonic function is sonically representable by clicking on the node which represents it visually. A global key center (i.e., fundamental reference pitch) determines the concrete instantiation of the harmonic functions as collections of frequencies.
+
+[1] A set of nodes and the edges that connect them
+
+### Interaction Modes
 
 The student is able to navigate their way through paths in this network in a variety of ways: 
 
@@ -18,9 +22,52 @@ The student is able to navigate their way through paths in this network in a var
 - in **automatic** mode, the program takes paths determined by the probabilities intrinsic to the network
 - in **playback** mode, the program demonstrates the paths taken by real-world compositions
 
-A simple underlying model of the tonic-dominant relationship is presented and increasingly rich examples of harmonic sequences are progressively disclosed by extending several axes of complexification: harmonic functions, chord degrees, and inversions.
+Initially, a simple underlying model of the tonic-dominant relationship is presented. Then, increasingly rich examples of harmonic sequences are progressively disclosed by extending several axes of complexification: harmonic functions, chord degrees, and inversions.
 
-[1] A set of nodes and the edges that connect them
+### View Representations
+
+I can imagine multiple view representations of the network:
+
+- **web** view, which shows all of the node connected clustered by harmonic function
+- **neighbor** view, which shows only the neighbors of a currently-selected node
+- **linear** view, which shows a left-to-right sequence a stacks of nodes of the same function
+
+## 🚧 Visual Mock-ups
+
+Here are some preliminary mock-ups.
+
+Some disclaimers: 
+
+- All aspects for style are up for debate. 
+- All musical details here are _very_ roughly improvised and will be replaced with more–thoughtfully-researched / -"composed" values
+
+#### Harmonic Progression Model
+
+Here is a very rough example of the underlying model of the harmonic functions and the connections therebetween. 
+
+`T` = [Tonic](https://en.wikipedia.org/wiki/Tonic_(music)), `D` = [Dominant](https://en.wikipedia.org/wiki/Dominant_(music)), `P` = [Predominant](https://en.wikipedia.org/wiki/Predominant_chord), `S` = [Submediant](https://en.wikipedia.org/wiki/Submediant), `M` = [Mediant](https://en.wikipedia.org/wiki/Mediant)
+
+![Increasing Function Complexity](img/increasing_function_complexity.pdf)
+
+The difference harmonic functions are given a unique color. They don't have to be these colors. They can be named differently.
+
+#### Manual Mode
+
+Here is a rough visualization of what **manual mode** could look like. Each harmonic function instance is colored according to their harmonic function. The available successive nodes are shown with their probabilities indicated by grayscale value. 
+
+In this example, the node with the red outline is the node selected at each stage by the student. This could be an example of the **neighbor view**.
+
+![Manual mode](img/manual_mode.pdf)
+
+#### Progressive Disclosure of Complexity
+
+In the following example, more instances of a given harmonic function can be revealed. Then, more harmonic functions are introduced. This could be a rough mock-up of the **web view**.
+
+![Increasing Function Instance Complexity](img/increasing_function_instance_complexity.pdf)
+
+In the following example, inversions are added. Here, the **web view** starts to get pretty tangled up. And it will only get worse! (That said, I like the idea of presenting varying degrees of complexity and comprehensibility (particularly if a new representation can mitigate the cognitive overload of the previous).
+
+![Increasing Inversion Complexity](img/increasing_inversion_complexity.pdf)
 
 ## Development Roadmap
 
@@ -54,7 +101,7 @@ Development phase 5 will add present chorales and/or music from other repertoire
 
 ### Phase 6:
 
-Development phase 6 will a circle-of-fifths representation to harmonic progressions, akin to that of the [`makeascale`](https://github.com/hzsteinberg/makeascale) application.
+Development phase 6 will explore different representations: **linear view**, and perhaps a **circle-of-fifths view**, akin to that of the [`makeascale`](https://github.com/hzsteinberg/makeascale) application.
 
 ### Phase 7:
 
