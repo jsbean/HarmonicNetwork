@@ -109,7 +109,7 @@ Development phase 7 will add a basic western notation view of sequences.
 
 ### Phase 8:
 
-Development phase 8 will add basic MusicXML import option.
+Development phase 8 will add a basic MusicXML import option.
 
 ## Future Directions
 
