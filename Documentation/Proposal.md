@@ -49,7 +49,7 @@ Here is a very rough example of the underlying model of the harmonic functions a
 
 ![Increasing Function Complexity](img/increasing_function_complexity.png)
 
-The difference harmonic functions are given a unique color. They don't have to be these colors. They can be named differently.
+The different harmonic functions are given a unique color. They don't have to be these colors. They can be named differently.
 
 #### Manual Mode
 
