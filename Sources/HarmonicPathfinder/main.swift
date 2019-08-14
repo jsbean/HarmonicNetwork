@@ -4,18 +4,27 @@ import ConsoleKit
 let console: Console = Terminal()
 var input = CommandInput(arguments: CommandLine.arguments)
 
-var stack: Stack<String> = []
+var path: Stack<String> = []
 
 var chord = "I"
-console.print("Let's start with \(chord)")
-stack.push(chord)
+path.push(chord)
+console.print("Let's start on the Tonic: \(path)")
 while true {
-    chord = console.choose("Where to, next?",
-        from: Array(bachMajor.neighbors(of: chord)),
-        display: { next in
-            ConsoleText(stringLiteral: "\(next): \(bachMajor.weight(from: chord, to: next)!)")
+    let options = Array(bachMajor.neighbors(of: chord)) + ["undo"]
+    let selection = console.choose("What's next?",
+        from: options, display: { option in
+            if option == "undo" { return option.consoleText() }
+            return ConsoleText(
+                stringLiteral: "\(option): \(bachMajor.weight(from: chord, to: option)!)"
+            )
         }
     )
-    stack.push(chord)
-    console.print("Harmonic Path: \(stack)")
+    if selection == "undo" {
+        _ = path.pop()
+        console.print("Harmonic Path: \(path)")
+    } else {
+        chord = selection
+        path.push(chord)
+        console.print("Harmonic Path: \(path)")
+    }
 }
