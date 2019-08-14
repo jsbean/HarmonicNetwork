@@ -1,10 +1,10 @@
 import DataStructures
 import ConsoleKit
 
-final class MakePath: Command {
+struct MakePath: Command {
     struct Signature: CommandSignature {
-        @Option(short: "o", help: "One shot: Stop once you have reached I (Tonic) again")
-        var oneShot: Bool
+        @Flag(short: "o", help: "Stop once you have reached I (Tonic) again")
+        var oneshot: Bool
         init() { }
     }
 
@@ -47,7 +47,7 @@ final class MakePath: Command {
             default:
                 path.push(selection)
                 redo = []
-                if signature.oneShot == true && selection == "I" {
+                if signature.oneshot == true && selection == "I" {
                     console.print("We are done here: \(path)")
                     return
                 }
