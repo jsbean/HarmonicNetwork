@@ -30,10 +30,10 @@ struct MakePath: Command {
             // (as guarded by the undo / redo interface)
             let current = path.top!
             let neighbors = bachMajor.neighbors(of: current)
-            let options = Array(neighbors) + undoRedoOptions
+            let options = Array(neighbors) + undoRedoOptions + ["done"]
             let selection = console.choose("What's next?", from: options, display: { option in
                 switch option {
-                case "undo", "redo":
+                case "undo", "redo", "done":
                     return option.consoleText()
                 default:
                     return ConsoleText(
@@ -46,6 +46,9 @@ struct MakePath: Command {
                 path.pop().map { redo.push($0) }
             case "redo":
                 redo.pop().map { path.push($0) }
+            case "done":
+                console.print("All done: [\(path.map { "\($0)" }.joined(separator: ", "))]")
+                return
             default:
                 path.push(selection)
                 redo = []
