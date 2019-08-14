@@ -4,10 +4,8 @@
 import PackageDescription
 
 let package = Package(
-    name: "HarmonicPathfinder",
+    name: "HarmonicNetwork",
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
         .package(url: "https://github.com/dn-m/Structure", from: "0.24.0"),
         .package(url: "https://github.com/dn-m/Music", from: "0.15.0"),
         .package(url: "https://github.com/dn-m/NotationModel", from: "0.8.0"),
@@ -15,14 +13,13 @@ let package = Package(
         .package(url: "https://github.com/jsbean/console-kit", .branch("master"))
     ],
     targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
-            name: "HarmonicPathfinder",
+            name: "harmonic-network",
             dependencies: ["DataStructures", "Pitch", "Math", "SpelledPitch", "ConsoleKit"]
         ),
         .testTarget(
             name: "HarmonicPathfinderTests",
-            dependencies: ["HarmonicPathfinder"]),
+            dependencies: ["harmonic-network"]
+        ),
     ]
 )
