@@ -34,13 +34,19 @@ struct MakePath: Command {
             let optionsWidth = options.map { $0.count }.max()!
             let selection = console.choose("What's next?", from: options, display: { option in
                 switch option {
-                case "undo", "redo", "done":
-                    return option.consoleText()
+                case "undo":
+                    return option.consoleText(color: .red, isBold: true)
+                case "redo":
+                    return option.consoleText(color: .red, isBold: true)
+                case "done":
+                    return option.consoleText(color: .green, isBold: true)
                 default:
                     let weight = bachMajor.weight(from: current, to: option)!
                     let percentage = Int(weight * 100)
                     let padding = String(repeating: " ", count: optionsWidth - option.count + 2)
-                    return ConsoleText(stringLiteral: "\(option):\(padding)\(percentage)%")
+                    return option.consoleText(color: .white, isBold: true)
+                        + padding.consoleText()
+                        + "\(percentage)%".consoleText(color: .white, isBold: false)
                 }
             })
             switch selection {
