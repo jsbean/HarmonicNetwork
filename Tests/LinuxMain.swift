@@ -3,5 +3,6 @@ import XCTest
 import HarmonicPathfinderTests
 
 var tests = [XCTestCaseEntry]()
-tests += HarmonicPathfinderTests.allTests()
+tests += HarmonicPathfinderTests.__allTests()
+
 XCTMain(tests)
