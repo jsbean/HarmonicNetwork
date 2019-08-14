@@ -31,14 +31,16 @@ struct MakePath: Command {
             let current = path.top!
             let neighbors = bachMajor.neighbors(of: current).reordered(by: orderedRomanNumerals)
             let options = neighbors + undoRedoOptions + ["done"]
+            let optionsWidth = options.map { $0.count }.max()!
             let selection = console.choose("What's next?", from: options, display: { option in
                 switch option {
                 case "undo", "redo", "done":
                     return option.consoleText()
                 default:
-                    return ConsoleText(
-                        stringLiteral: "\(option): \(bachMajor.weight(from: current, to: option)!)"
-                    )
+                    let weight = bachMajor.weight(from: current, to: option)!
+                    let percentage = Int(weight * 100)
+                    let padding = String(repeating: " ", count: optionsWidth - option.count + 2)
+                    return ConsoleText(stringLiteral: "\(option):\(padding)\(percentage)%")
                 }
             })
             switch selection {
@@ -47,7 +49,7 @@ struct MakePath: Command {
             case "redo":
                 redo.pop().map { path.push($0) }
             case "done":
-                console.print("All done: [\(path.map { "\($0)" }.joined(separator: ", "))]")
+                console.print("All done: \(path)")
                 return
             default:
                 path.push(selection)
