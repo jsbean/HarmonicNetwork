@@ -2,6 +2,7 @@ import DataStructures
 import ConsoleKit
 
 struct MakePath: Command {
+
     struct Signature: CommandSignature {
         @Flag(short: "o", help: "Stop once you have reached I (Tonic) again")
         var oneshot: Bool
@@ -17,6 +18,7 @@ struct MakePath: Command {
         var redo: Stack<String> = []
         var undoRedoOptions: [String] {
             var result: [String] = []
+            // Always ensure there is at least one chord in the path ("I")
             if path.count > 1 { result.append("undo") }
             if redo.count > 0 { result.append("redo") }
             return result
@@ -60,12 +62,12 @@ struct MakePath: Command {
 let console: Console = Terminal()
 var input = CommandInput(arguments: CommandLine.arguments)
 var config = CommandConfiguration()
-config.use(MakePath(), as: "makepath", isDefault: true)
+config.use(MakePath(), as: "find-path", isDefault: false)
 
 do {
     let commands = try config.resolve()
-        .group(help: "Find your way through a network of harmony!")
+        .group(help: "\"It's all connected.\"")
     try console.run(commands, input: input)
 } catch {
-    print("Something went horribly wrong. Forgive me and forgive yourself. It will be ok.")
+    print("Something went horribly wrong. Forgive me. Forgive yourself. Try again? Or just move on.")
 }
