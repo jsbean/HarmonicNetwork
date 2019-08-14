@@ -3,7 +3,7 @@ import ConsoleKit
 let console: Console = Terminal()
 var input = CommandInput(arguments: CommandLine.arguments)
 
-var chord = bachMajor.nodes.randomElement()!
+var chord = "I"
 console.print("Let's start with \(chord)")
 while true {
     chord = console.choose("Where to, next?",
