@@ -29,8 +29,8 @@ struct MakePath: Command {
             // Invariant: There is always at least one element in the `path`.
             // (as guarded by the undo / redo interface)
             let current = path.top!
-            let neighbors = bachMajor.neighbors(of: current)
-            let options = Array(neighbors) + undoRedoOptions + ["done"]
+            let neighbors = bachMajor.neighbors(of: current).reordered(by: orderedRomanNumerals)
+            let options = neighbors + undoRedoOptions + ["done"]
             let selection = console.choose("What's next?", from: options, display: { option in
                 switch option {
                 case "undo", "redo", "done":
