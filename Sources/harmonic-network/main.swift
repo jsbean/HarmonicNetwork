@@ -36,6 +36,8 @@ struct FindPath: Command {
             // (as guarded by the undo / redo interface)
             let current = path.top!
             let neighbors = bachMajor.neighbors(of: current).reordered(by: orderedRomanNumerals)
+            // Factor to multiply weights by so that percentages sum-to-one
+            let factor = 1 / neighbors.map { bachMajor.weight(from: current, to: $0)! }.sum
             let options = neighbors + undoRedoOptions + ["done"]
             let optionsWidth = options.map { $0.count }.max()!
             let selection = context.console.choose("What's next?", from: options, display: { option in
@@ -48,12 +50,12 @@ struct FindPath: Command {
                     return option.consoleText(color: .green, isBold: true)
                 default:
                     let weight = bachMajor.weight(from: current, to: option)!
-                    let percentage = Int(weight * 100)
+                    let percentage = Int((weight * factor * 100).rounded())
                     let padding = String(repeating: " ", count: optionsWidth - option.count + 2)
                     return option.consoleText(color: .white, isBold: true)
                         + padding.consoleText()
                         + "\(percentage)%".consoleText(color: .white, isBold: false)
-                }
+                    }
             })
             switch selection {
             case "undo":
