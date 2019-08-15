@@ -10,12 +10,12 @@ let package = Package(
         .package(url: "https://github.com/dn-m/Music", from: "0.15.0"),
         .package(url: "https://github.com/dn-m/NotationModel", from: "0.8.0"),
         .package(url: "https://github.com/dn-m/Math", from: "0.7.1"),
-        .package(url: "https://github.com/jsbean/console-kit", .branch("master"))
+        .package(url: "https://github.com/vapor/console-kit", .upToNextMinor(from: "3.1.1"))
     ],
     targets: [
         .target(
             name: "harmonic-network",
-            dependencies: ["DataStructures", "Pitch", "Math", "SpelledPitch", "ConsoleKit"]
+            dependencies: ["DataStructures", "Pitch", "Math", "SpelledPitch", "Console", "Logging", "Command"]
         ),
         .testTarget(
             name: "HarmonicPathfinderTests",
