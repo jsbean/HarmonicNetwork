@@ -10,7 +10,9 @@ Find your way through a network of harmony.
 
 ### harmonic-network
 
-`harmonic-network` is a command line interface which allows you to incrementally move their way through a network of harmonies.
+`harmonic-network` is a command line interface which allows you to incrementally build up a chord progression that is backed behind the industry-leading Johann Sebastian Bach technology.
+
+![Example](Documentation/img/I-vi-ii.png)
 
 #### Usage
 
