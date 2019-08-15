@@ -1,19 +1,25 @@
 import DataStructures
-import ConsoleKit
+import Console
+import Command
 
-struct MakePath: Command {
+struct FindPath: Command {
+    let arguments: [CommandArgument] = []
 
-    struct Signature: CommandSignature {
-        @Flag(short: "o", help: "Stop once you have reached I (Tonic) again")
-        var oneshot: Bool
-        init() { }
+    var options: [CommandOption] {
+        return [
+            .flag(
+                name: "one-shot",
+                short: "o",
+                help: ["Stop once you have reached I (Tonic) again"]
+            )
+        ]
     }
 
-    var help: String {
-        "Find your way through a network of harmony!"
+    var help: [String] {
+        return ["Find your way through a network of harmony!"]
     }
 
-    func run(using context: CommandContext, signature: Signature) throws {
+    func run(using context: CommandContext) throws -> EventLoopFuture<Void> {
         var path: Stack<String> = []
         var redo: Stack<String> = []
         var undoRedoOptions: [String] {
@@ -24,7 +30,7 @@ struct MakePath: Command {
             return result
         }
         path.push("I")
-        console.print("Let's start on the Tonic: \(path)")
+        context.console.print("Let's start on the Tonic: \(path)")
         while true {
             // Invariant: There is always at least one element in the `path`.
             // (as guarded by the undo / redo interface)
@@ -32,7 +38,7 @@ struct MakePath: Command {
             let neighbors = bachMajor.neighbors(of: current).reordered(by: orderedRomanNumerals)
             let options = neighbors + undoRedoOptions + ["done"]
             let optionsWidth = options.map { $0.count }.max()!
-            let selection = console.choose("What's next?", from: options, display: { option in
+            let selection = context.console.choose("What's next?", from: options, display: { option in
                 switch option {
                 case "undo":
                     return option.consoleText(color: .red, isBold: true)
@@ -55,30 +61,38 @@ struct MakePath: Command {
             case "redo":
                 redo.pop().map { path.push($0) }
             case "done":
-                console.print("All done: \(path)")
-                return
+                context.console.print("All done: \(path)")
+                return .done(on: context.container)
             default:
                 path.push(selection)
                 redo = []
-                if signature.oneshot == true && selection == "I" {
-                    console.print("We are done here: \(path)")
-                    return
+                if context.options["one-shot"] != nil && selection == "I" {
+                    context.console.print("We are done here: \(path)")
+                    return .done(on: context.container)
                 }
             }
-            console.print("Harmonic Path: \(path)")
+            context.console.print("Harmonic Path: \(path)")
         }
     }
 }
 
+let container = BasicContainer(
+    config: Config(),
+    environment: Environment.production,
+    services: Services(),
+    on: EmbeddedEventLoop()
+)
+
 let console: Console = Terminal()
 var input = CommandInput(arguments: CommandLine.arguments)
-var config = CommandConfiguration()
-config.use(MakePath(), as: "find-path", isDefault: false)
+var config = CommandConfig()
+config.use(FindPath(), as: "find-path", isDefault: true)
+
 
 do {
-    let commands = try config.resolve()
-        .group(help: "\"It's all connected.\"")
-    try console.run(commands, input: input)
+    let commands = try config.resolve(for: container)
+        .group(help: ["\"It's all connected.\""])
+    _ = console.run(commands, input: &input, on: container)
 } catch {
     print("Something went horribly wrong. Forgive me. Forgive yourself. Try again? Or just move on.")
 }
