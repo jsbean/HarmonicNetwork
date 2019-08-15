@@ -18,7 +18,7 @@ final class HarmonicPathfinderTests: XCTestCase {
         process.standardOutput = pipe
 
         try process.run()
-        process.waitUntilExit()
+        process.terminate()
 
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         let _ = String(data: data, encoding: .utf8)
