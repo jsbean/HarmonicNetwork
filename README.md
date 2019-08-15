@@ -1,10 +1,10 @@
 # Harmonic Network
 
-Find your way through a network of harmony.
-
 ![Swift Version](https://img.shields.io/badge/Swift-5.0-orange.svg)
 ![Platforms](https://img.shields.io/badge/platform-linux%20%7C%20macOS%20%7C%20iOS%20%7C%20watchOS%20%7C%20tvOS-lightgrey)
 ![Build Status](https://travis-ci.org/jsbean/HarmonicNetwork.svg?branch=latest)
+
+Find your way through a network of harmony.
 
 ## Products
 
