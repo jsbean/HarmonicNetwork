@@ -10,10 +10,10 @@ Find your way through a network of harmony.
 
 #### Usage
 
-Run the `find-path` command
+Once you have [built the executable](#Installation), run the `harmonic-network` program by calling it up from the `.build/debug` directory
 
 ```bash
-./.build/debug/harmonic-network find-path
+./.build/debug/harmonic-network
 ```
 
 You will start on the `Tonic` (`I`) chord, and you will be prompted to choose the next chord from a list of options.
@@ -59,11 +59,11 @@ All done: ["I", "IV6", "V6", "vi", "ii", "V", "I"]
 Furthermore, you have the option of `undo`-ing and `redo`-ing any choices that you have made. Kids today have it so easy.
 
 
-##### `--oneshot (-o)`
+##### `--one-shot (-o)`
 
-The `--oneshot` flag (`-o` for short) tells the program that you only want to create a single tonic progression. That is to say, as soon as you get to the tonic (`I`) chord again, the game's up.
+The `--one-shot` flag (`-o` for short) tells the program that you only want to create a single tonic progression. That is to say, as soon as you get to the tonic (`I`) chord again, the game's up.
 
-If you don't call the `--oneshot` flag, you will choose new harmonies for the rest of eternity, or until you select the `done` option, your laptop battery runs out, or until the heat death of the universe. Your call.
+If you don't call the `--one-shot` flag, you will choose new harmonies for the rest of eternity, or until you select the `done` option, your laptop battery runs out, or until the heat death of the universe. Your call.
 
 ##### Installation
 
