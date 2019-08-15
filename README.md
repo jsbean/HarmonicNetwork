@@ -10,10 +10,10 @@ Find your way through a network of harmony.
 
 #### Usage
 
-Run the `find-path` command
+Once you have [built the executable](#Installation), run the `harmonic-network` program by calling it up from the `.build/debug` directory
 
 ```bash
-./.build/debug/harmonic-network find-path
+./.build/debug/harmonic-network
 ```
 
 You will start on the `Tonic` (`I`) chord, and you will be prompted to choose the next chord from a list of options.
