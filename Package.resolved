@@ -20,6 +20,15 @@
         }
       },
       {
+        "package": "Graphics",
+        "repositoryURL": "https://github.com/dn-m/Graphics",
+        "state": {
+          "branch": null,
+          "revision": "56b39daca869bed92820a464d6e44bb5a53f2ed9",
+          "version": "0.2.0"
+        }
+      },
+      {
         "package": "Math",
         "repositoryURL": "https://github.com/dn-m/Math",
         "state": {
@@ -89,6 +98,15 @@
           "branch": null,
           "revision": "37760e9a52030bb9011972c5213c3350fa9d41fd",
           "version": "1.0.0"
+        }
+      },
+      {
+        "package": "SWXMLHash",
+        "repositoryURL": "https://github.com/drmohundro/SWXMLHash",
+        "state": {
+          "branch": null,
+          "revision": "f43166a8e18fdd0857f29e303b1bb79a5428bca0",
+          "version": "4.9.0"
         }
       }
     ]
