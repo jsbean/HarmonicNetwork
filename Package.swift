@@ -1,4 +1,4 @@
-// swift-tools-version:5.0
+// swift-tools-version:4.0
 import PackageDescription
 
 let package = Package(
@@ -9,7 +9,7 @@ let package = Package(
         .package(url: "https://github.com/dn-m/NotationModel", from: "0.9.0"),
         .package(url: "https://github.com/dn-m/Math", from: "0.8.0"),
         .package(url: "https://github.com/dn-m/Graphics", from: "0.2.0"),
-        .package(url: "https://github.com/vapor/console-kit", .upToNextMinor(from: "3.1.1")),
+        .package(url: "https://github.com/vapor/console-kit", .upToNextMajor(from: "3.1.1")),
         .package(url: "https://github.com/vapor/vapor.git", .upToNextMinor(from: "3.3.0")),
     ],
     targets: [
