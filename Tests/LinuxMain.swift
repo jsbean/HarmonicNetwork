@@ -1,8 +1,8 @@
 import XCTest
 
-import HarmonicPathfinderTests
+import HarmonicNetworkCoreTests
 
 var tests = [XCTestCaseEntry]()
-tests += HarmonicPathfinderTests.__allTests()
+tests += HarmonicNetworkCoreTests.__allTests()
 
 XCTMain(tests)
