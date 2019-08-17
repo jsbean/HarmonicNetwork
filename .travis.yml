@@ -12,6 +12,10 @@ env:
   - SWIFT_VERSION=5.0.1
   - SWIFT_VERSION=5.1-DEVELOPMENT-SNAPSHOT-2019-08-14-a 
 script:
-  - brew install libressl
   - swift package update
   - swift test
+addons:
+  homebrew:
+    packages:
+    - beanstalk
+    update: true
