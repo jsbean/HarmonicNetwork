@@ -26,18 +26,6 @@ struct ChordView {
 
 typealias ChordClusterViewNode = Tree<ChordClusterView,ChordView>
 
-extension ChordClusterViewNode {
-    func printAll() {
-        switch self {
-        case let .leaf(chordView):
-            dump(chordView)
-        case let .branch(clusterView, branches):
-            dump(clusterView)
-            branches.forEach { $0.printAll() }
-        }
-    }
-}
-
 extension ChordClusterNode {
     func layout(at position: Point = .zero, angle: Angle = .zero, spread: Double)
         -> ChordClusterViewNode
