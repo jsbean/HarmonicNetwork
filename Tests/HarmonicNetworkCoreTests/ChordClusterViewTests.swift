@@ -15,30 +15,10 @@ import Geometry
 
 class ChordClusterViewTests: XCTestCase {
 
-    func testPerpendicularAngle() {
-        let angle = Angle(degrees: 90)
-        let result = angle.perpendicular
-        let expected = Angle(degrees: 180)
-        XCTAssertEqual(result, expected)
-    }
-
     func testPointsFromCentroidSinglePoint() {
         let centroid = Point(x: 100, y: 100)
         let result = pointsAndAngles(count: 1, distance: 100, from: centroid, at: Angle(degrees: 30))
         XCTAssertEqual(result.map { $0.point }, [centroid])
-    }
-
-    ///        (0,0)
-    ///    • ----x---- •
-    /// (-100,0)    (100,0)
-    func testTwoPointsFromCentroidAtZeroAngle() {
-        let distance: Double = 100
-        let result = pointsAndAngles(count: 2, distance: distance, from: .zero, at: .zero)
-        let expected = [Point(x: 100, y: 0), Point(x: -100, y: 0)]
-        zip(result.map { $0.point },expected).forEach { result, expected in
-            XCTAssertEqual(result.x, expected.x, accuracy: 0.000001)
-            XCTAssertEqual(result.y, expected.y, accuracy: 0.000001)
-        }
     }
 
     ///   • (0,100)
@@ -46,10 +26,23 @@ class ChordClusterViewTests: XCTestCase {
     ///   x (0,0)
     ///   |
     ///   • (0,-100)
+    func testTwoPointsFromCentroidAtZeroAngle() {
+        let distance: Double = 100
+        let result = pointsAndAngles(count: 2, distance: distance, from: .zero, at: .zero)
+        let expected = [Point(x: 0, y: 100), Point(x: 0, y: -100)]
+        zip(result.map { $0.point },expected).forEach { result, expected in
+            XCTAssertEqual(result.x, expected.x, accuracy: 0.000001)
+            XCTAssertEqual(result.y, expected.y, accuracy: 0.000001)
+        }
+    }
+
+    ///        (0,0)
+    ///    • ----x---- •
+    /// (-100,0)    (100,0)
     func testTwoPointsFromCentroidAt90DegreeAngle() {
         let distance: Double = 100
         let result = pointsAndAngles(count: 2, distance: distance, from: .zero, at: Angle(degrees: 90))
-        let expected = [Point(x: 0, y: 100), Point(x: 0, y: -100)]
+        let expected = [Point(x: -100, y: 0), Point(x: 100, y: 0)]
         zip(result.map { $0.point },expected).forEach { result, expected in
             XCTAssertEqual(result.x, expected.x, accuracy: 0.000001)
             XCTAssertEqual(result.y, expected.y, accuracy: 0.000001)
@@ -71,8 +64,8 @@ class ChordClusterViewTests: XCTestCase {
         ])
         let result = chordCluster.layout(spread: 100)
         let expected = [
-            ChordView(position: Point(x: 100, y: 0), chord: "I"),
-            ChordView(position: Point(x: -100, y: 0), chord: "V")
+            ChordView(position: Point(x: 0, y: 100), chord: "I"),
+            ChordView(position: Point(x: 0, y: -100), chord: "V")
         ]
         zip(result.leaves, expected).forEach { result, expected in
             XCTAssertEqual(result.position.x, expected.position.x, accuracy: 0.000001)
@@ -87,8 +80,8 @@ class ChordClusterViewTests: XCTestCase {
         ])
         let result = chordCluster.layout(angle: Angle(degrees: 90), spread: 100)
         let expected = [
-            ChordView(position: Point(x: 0, y: 100), chord: "I"),
-            ChordView(position: Point(x: 0, y: -100), chord: "V")
+            ChordView(position: Point(x: -100, y: 0), chord: "I"),
+            ChordView(position: Point(x: 100, y: 0), chord: "V")
         ]
         zip(result.leaves, expected).forEach { result, expected in
             XCTAssertEqual(result.position.x, expected.position.x, accuracy: 0.000001)

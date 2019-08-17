@@ -11,15 +11,6 @@
         }
       },
       {
-        "package": "Console",
-        "repositoryURL": "https://github.com/vapor/console-kit",
-        "state": {
-          "branch": null,
-          "revision": "74cfbea629d4aac34a97cead2447a6870af1950b",
-          "version": "3.1.1"
-        }
-      },
-      {
         "package": "Core",
         "repositoryURL": "https://github.com/vapor/core.git",
         "state": {
