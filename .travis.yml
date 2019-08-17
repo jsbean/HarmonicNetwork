@@ -17,5 +17,5 @@ script:
 addons:
   homebrew:
     packages:
-    - beanstalk
+    - libressl
     update: true

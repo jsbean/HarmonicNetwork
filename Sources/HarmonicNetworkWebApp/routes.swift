@@ -7,5 +7,7 @@ import Vapor
 public func routes(_ router: Router) throws {
 
     // Home page
-    router.get { req -> Future<View> in try req.view().render("home") }
+    router.get { req -> Future<View> in
+        try req.view().render("home")
+    }
 }
