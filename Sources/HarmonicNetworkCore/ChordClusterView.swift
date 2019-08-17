@@ -5,8 +5,11 @@
 //  Created by James Bean on 8/16/19.
 //
 
-// FIXME: Conditional import < Swift 5.0
+#if os(Linux)
+import Glibc
+#else
 import Darwin
+#endif
 
 import DataStructures
 import Math
