@@ -7,9 +7,9 @@
 
 import DataStructures
 
-typealias HarmonicNetwork = WeightedDirectedGraph<String,Double>
+public typealias HarmonicNetwork = WeightedDirectedGraph<String,Double>
 
-let bachMajor: HarmonicNetwork = {
+public let bachMajor: HarmonicNetwork = {
     var network = HarmonicNetwork()
     // I
     network.insertEdge(from: "I", to: "ii", weight: 0.1)

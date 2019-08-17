@@ -5,6 +5,7 @@
 //  Created by James Bean on 8/16/19.
 //
 
+import Foundation
 import XCTest
 import DataStructures
 import Pitch
@@ -13,6 +14,13 @@ import SpelledPitch
 
 class ChordClusterTests: XCTestCase {
 
+    func testCodable() throws {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        let json = try encoder.encode(bachMajor)
+        let string = String(data: json, encoding: .utf8)!
+        print(string)
+    }
 
     func testTonicDominant() {
         let cluster: ChordClusterNode = .branch("Root", [

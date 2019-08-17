@@ -198,11 +198,15 @@ class ChordClusterViewTests: XCTestCase {
     func testLayoutMultiNested() {
         let chordCluster: ChordClusterNode = .branch("Root", [
             .branch("Tonic", [
-                .leaf("I"),
-                .leaf("I6"),
-                .leaf("vi"),
-                .leaf("vi6"),
-                .leaf("vi7")
+                .branch("I", [
+                    .leaf("I"),
+                    .leaf("I6"),
+                ]),
+                .branch("vi", [
+                    .leaf("vi"),
+                    .leaf("vi6"),
+                    .leaf("vi7")
+                ])
             ]),
             .branch("Predominant", [
                 .branch("IV", [
@@ -227,6 +231,6 @@ class ChordClusterViewTests: XCTestCase {
             ])
         ])
         let result = chordCluster.layout(angle: Angle(degrees: 90), spread: 50)
-        result.leaves.forEach { print($0) }
+        result.leaves.map { $0.position.reflected(over: .vertical(0)) }.forEach { print($0) }
     }
 }
