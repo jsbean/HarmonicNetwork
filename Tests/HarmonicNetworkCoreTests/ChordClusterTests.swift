@@ -10,25 +10,9 @@ import XCTest
 import DataStructures
 import Pitch
 import SpelledPitch
-@testable import HarmonicNetworkCore
+import HarmonicNetworkCore
 
 class ChordClusterTests: XCTestCase {
-
-    func testCodable() throws {
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = .prettyPrinted
-        let json = try encoder.encode(bachMajor)
-        let string = String(data: json, encoding: .utf8)!
-        print(string)
-    }
-
-    func testTonicDominant() {
-        let cluster: ChordClusterNode = .branch("Root", [
-            .branch("Tonic", [.branch("I", [.leaf("I")])]),
-            .branch("Dominant", [.branch("V", [.leaf("V")])])
-        ])
-        cluster.printAll()
-    }
 
     func testChordCluster() {
         let cluster: ChordClusterNode = .branch("Root", [
@@ -68,6 +52,5 @@ class ChordClusterTests: XCTestCase {
                 ])
             ]),
         ])
-        cluster.printAll()
     }
 }

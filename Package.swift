@@ -17,20 +17,20 @@ let package = Package(
             dependencies: ["DataStructures", "Pitch", "Math", "SpelledPitch", "Geometry"]
         ),
         .target(
-            name: "harmonic-network-webapp",
-            dependencies: ["Vapor"]
+            name: "HarmonicNetworkWebApp",
+            dependencies: ["DataStructures", "Vapor"]
         ),
         .target(
-            name: "harmonic-network-server",
-            dependencies: ["harmonic-network-webapp"]
+            name: "HarmonicNetworkServer",
+            dependencies: ["DataStructures", "HarmonicNetworkWebApp"]
         ),
         .target(
-            name: "harmonic-network-cli",
-            dependencies: ["DataStructures", "Pitch", "Math", "SpelledPitch", "Console", "Logging", "Command"]
+            name: "HarmonicNetworkCLI",
+            dependencies: ["DataStructures", "Pitch", "Math", "SpelledPitch", "Vapor"]
         ),
         .testTarget(
             name: "HarmonicNetworkCoreTests",
-            dependencies: ["HarmonicNetworkCore"]
+            dependencies: ["DataStructures", "HarmonicNetworkCore"]
         ),
     ]
 )
