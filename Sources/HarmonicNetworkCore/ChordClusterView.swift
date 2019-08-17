@@ -93,11 +93,5 @@ extension Angle {
     }
 }
 
-extension Angle {
-    var perpendicular: Angle {
-        return Angle(radians: radians + 0.5 * .pi)
-    }
-}
-
 extension ChordView: Equatable { }
 extension ChordClusterView: Equatable { }
