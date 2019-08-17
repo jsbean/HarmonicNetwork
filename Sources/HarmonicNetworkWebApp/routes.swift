@@ -5,6 +5,9 @@ import Vapor
 ///
 /// [Learn More →](https://docs.vapor.codes/3.0/getting-started/structure/#routesswift)
 public func routes(_ router: Router) throws {
+
+    router.get("hello") { req -> String in "Welcome to the Harmonic Network web app!" }
+
 //    router.get { req -> Future<View> in
 //        return Chord.query(on: req).all().flatMap(to: View.self) { chords in
 //            let nodes = chords.map { chord in
