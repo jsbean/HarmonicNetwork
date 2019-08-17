@@ -10,6 +10,7 @@ let package = Package(
         .package(url: "https://github.com/dn-m/Math", from: "0.8.0"),
         .package(url: "https://github.com/dn-m/Graphics", from: "0.2.0"),
         .package(url: "https://github.com/vapor/vapor.git", .exact("3.3.0")),
+        .package(url: "https://github.com/vapor/leaf.git", .upToNextMinor(from: "3.0.0")),
     ],
     targets: [
         .target(
@@ -18,7 +19,7 @@ let package = Package(
         ),
         .target(
             name: "HarmonicNetworkWebApp",
-            dependencies: ["DataStructures", "Vapor"]
+            dependencies: ["DataStructures", "Vapor", "Leaf"]
         ),
         .target(
             name: "HarmonicNetworkServer",
