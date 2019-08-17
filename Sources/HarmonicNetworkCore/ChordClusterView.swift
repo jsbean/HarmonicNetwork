@@ -48,8 +48,7 @@ extension ChordClusterNode {
                     at: angle
                 )
                 let branches = zip(nodes, pa).map { nodePointAndAngle -> ChordClusterViewNode in
-                    let (node,(point,localAngle)) = nodePointAndAngle
-                    let angle = localAngle
+                    let (node,(point,angle)) = nodePointAndAngle
                     return traverseToLayout(node, at: point, angle: angle, spread: spread * 0.5)
                 }
                 return .branch(
