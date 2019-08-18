@@ -1,25 +1,28 @@
 function continuePath(path, redo) {
-
-  console.log("continue path redo: " + redo);
-
-  // TODO: prepare todo / redo
+  
+  // Prepare undo redo div
   createUndoRedoButtons(path, redo);
+
+  // The current chord
   let current = path[path.length - 1];
 
   // Create path label
   let pathLabel = document.getElementById("path-label")
   pathLabel.innerHTML = "Path: " + path;
 
-  // Create available neighbors buttons
+  // Create available neighbors div
   let div = document.createElement("div");
   div.name = "neighbors"
   div.id = "neighbors"
 
+  // Collect only the nodes connected to `current`
   let neighbors = bachMajor
-    .filter(function(edge) {  return edge.source == current; })
+    .filter(function(edge) { return edge.source == current; })
     .map(function(edge) {  
       return { "node": edge.destination, "weight": edge.weight }
     });
+
+  // Create buttons for each neighbor node
   for (var i = 0; i < neighbors.length; i++) {
     let neighbor = neighbors[i];
     let button = document.createElement("button");
@@ -34,22 +37,27 @@ function continuePath(path, redo) {
     }
     div.insertBefore(button, div.childNodes[0]);
   }
+
+  // Add neighbor buttons to body
   var body = document.getElementsByTagName("body")[0];
   body.appendChild(div);
 };
 
 function createUndoRedoButtons(path, redo) {
 
-  // Remove undo and redo buttons
+  // Prepare the undo-redo div if it doesn't exist yet
   var undoRedo = document.getElementById("undo-redo")
   if (!undoRedo) {
     undoRedo = document.createElement("div");
     undoRedo.id = "undo-redo";
   }
 
+  // Start clean: remove undo and redo buttons
   while (undoRedo.hasChildNodes()) {
     undoRedo.removeChild(undoRedo.lastChild);
   }
+
+  // If we are past the "I" chord, allow user to "undo" last decision
   if (path.length > 1) {
     let undoButton = document.createElement("button");
     undoButton.innerHTML = "Undo"
@@ -61,6 +69,8 @@ function createUndoRedoButtons(path, redo) {
     };
     undoRedo.appendChild(undoButton);
   }
+
+  // If we have undone anything, expose a "redo" button
   if (redo.length > 0) {
     let redoButton = document.createElement("button");
     redoButton.innerHTML = "Redo"
@@ -72,10 +82,17 @@ function createUndoRedoButtons(path, redo) {
     };
     undoRedo.appendChild(redoButton);
   }
+
+  // Add the undo-redo div
   var body = document.getElementsByTagName("body")[0];
   body.append(undoRedo);
 };
 
+// The main entry point into the harmonic network.
+// Starts out on the "I" chord.
+// TODO: single tonic progression option
+// TODO: done option
+// TODO: try again? option
 function findPath() {
   var path = ["I"];
   var redo = Array();
