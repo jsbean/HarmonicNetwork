@@ -1,7 +1,6 @@
 import DataStructures
 import HarmonicNetworkCore
-import Console
-import Command
+import Vapor
 
 struct FindPath: Command {
     let arguments: [CommandArgument] = []

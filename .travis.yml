@@ -14,3 +14,8 @@ env:
 script:
   - swift package update
   - swift test
+addons:
+  homebrew:
+    packages:
+    - libressl
+    update: true

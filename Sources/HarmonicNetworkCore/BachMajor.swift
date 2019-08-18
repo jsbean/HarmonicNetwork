@@ -1,16 +1,14 @@
 //
-//  BachMajorChorales.swift
-//  HarmonicPathfinder
+//  BachMajor.swift
+//  HarmonicNetworkCore
 //
-//  Created by James Bean on 8/13/19.
+//  Created by James Bean on 8/17/19.
 //
 
 import DataStructures
 
-public typealias HarmonicNetwork = WeightedDirectedGraph<String,Double>
-
-public let bachMajor: HarmonicNetwork = {
-    var network = HarmonicNetwork()
+public let bachMajor: WeightedDirectedGraph<String,Double> = {
+    var network = WeightedDirectedGraph<String,Double>()
     // I
     network.insertEdge(from: "I", to: "ii", weight: 0.1)
     network.insertEdge(from: "I", to: "ii6", weight: 0.2)
@@ -82,3 +80,4 @@ public let bachMajor: HarmonicNetwork = {
     network.insertEdge(from: "vii6", to: "I64", weight: 1)
     return network
 }()
+

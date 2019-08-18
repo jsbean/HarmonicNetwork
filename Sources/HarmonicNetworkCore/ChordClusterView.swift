@@ -5,8 +5,11 @@
 //  Created by James Bean on 8/16/19.
 //
 
-// FIXME: Conditional import < Swift 5.0
+#if os(Linux)
+import Glibc
+#else
 import Darwin
+#endif
 
 import DataStructures
 import Math
@@ -14,20 +17,20 @@ import Pitch
 import SpelledPitch
 import Geometry
 
-struct ChordClusterView {
+public struct ChordClusterView {
     var position: Point
     var label: String
 }
 
-struct ChordView {
+public struct ChordView {
     var position: Point
     var chord: String
 }
 
-typealias ChordClusterViewNode = Tree<ChordClusterView,ChordView>
+public typealias ChordClusterViewNode = Tree<ChordClusterView,ChordView>
 
 extension ChordClusterNode {
-    func layout(at position: Point = .zero, angle: Angle = .zero, spread: Double)
+    public func layout(at position: Point = .zero, angle: Angle = .zero, spread: Double)
         -> ChordClusterViewNode
     {
         func traverseToLayout(
@@ -48,7 +51,8 @@ extension ChordClusterNode {
                     at: angle
                 )
                 let branches = zip(nodes, pa).map { nodePointAndAngle -> ChordClusterViewNode in
-                    let (node,(point,angle)) = nodePointAndAngle
+                    let (node,pointAndAngle) = nodePointAndAngle
+                    let (point,angle) = pointAndAngle
                     return traverseToLayout(node, at: point, angle: angle, spread: spread * 0.5)
                 }
                 return .branch(
@@ -62,7 +66,7 @@ extension ChordClusterNode {
 }
 
 /// - Returns: An array of points spread equidistantly around the given `centroid`.
-func pointsAndAngles(
+public func pointsAndAngles(
     count: Int,
     distance: Double,
     from centroid: Point,
