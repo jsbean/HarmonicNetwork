@@ -9,16 +9,17 @@ public func configure(
     _ env: inout Environment,
     _ services: inout Services
 ) throws {
+
     // Register routes to the router
     let router = EngineRouter.default()
     try routes(router)
     services.register(router, as: Router.self)
     
-    // Register services
-
+    // Register middle management
     var middlewares = MiddlewareConfig()
     middlewares.use(FileMiddleware.self)
 
+    // Register services
     services.register(middlewares)
     try services.register(LeafProvider())
     config.prefer(LeafRenderer.self, for: ViewRenderer.self)
