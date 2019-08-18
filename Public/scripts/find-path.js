@@ -36,7 +36,7 @@ function continuePath(path, redo) {
   }
   var body = document.getElementsByTagName("body")[0];
   body.appendChild(div);
-}
+};
 
 function createUndoRedoButtons(path, redo) {
 
@@ -74,10 +74,10 @@ function createUndoRedoButtons(path, redo) {
   }
   var body = document.getElementsByTagName("body")[0];
   body.append(undoRedo);
-}
+};
 
 function findPath() {
   var path = ["I"];
   var redo = Array();
   continuePath(path, redo);
-}
+};
