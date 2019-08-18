@@ -49,7 +49,6 @@ struct FindPath: Command {
                 case "done":
                     return option.consoleText(color: .green, isBold: true)
                 default:
-                    return option.consoleText()
                     let weight = bachMajor.weight(from: current, to: option)!
                     let percentage = Int((weight * factor * 100).rounded())
                     let padding = String(repeating: " ", count: optionsWidth - option.count + 2)
