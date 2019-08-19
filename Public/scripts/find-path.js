@@ -41,6 +41,8 @@ function continuePath(path, redo) {
   // FIXME: Refactor using `await`
   // Refactor body into own method
   let neighborsNode = document.getElementById("neighbors");
+
+  // Make a POST request with the current chord label to the address: "neighbors"
   post({ "label": current }, "neighbors", response => {
     let neighbors = JSON.parse(response);
     // Create buttons for each neighbor node
@@ -64,12 +66,12 @@ function proceedWithChord(chord, path) {
 // Update UI
 
 function updateUndoRedo(path, redo) {
-  path.length > 1 ? enableUndoButton() : disableUndoButton()
-  redo.length > 0 ? enableRedoButton() : disableRedoButton()
+  path.length > 1 ? enableUndoButton() : disableUndoButton();
+  redo.length > 0 ? enableRedoButton() : disableRedoButton();
 }
 
 function updatePathLabel(path) {
-  var pathLabel = document.getElementById("path-label")
+  var pathLabel = document.getElementById("path-label");
   pathLabel.innerHTML = "Path: " + path;
 }
 // Prepare UI
@@ -87,23 +89,23 @@ function prepareUndoButton(callback) {
 }
 
 function enableRedoButton() {
-  let button = document.getElementById("redo")
-  button.innerHTML = "Redo"
+  let button = document.getElementById("redo");
+  button.disabled = false;
 }
 
 function disableRedoButton() {
-  let button = document.getElementById("redo")
-  button.innerHTML = "xRedox"
+  let button = document.getElementById("redo");
+  button.disabled = true;
 }
 
 function enableUndoButton() {
-  let button = document.getElementById("undo")
-  button.innerHTML = "Undo"
+  let button = document.getElementById("undo");
+  button.disabled = false;
 }
 
 function disableUndoButton() {
-  let button = document.getElementById("undo")
-  button.innerHTML = "xUndox"
+  let button = document.getElementById("undo");
+  button.disabled = true;
 }
 
 function clearNeighborButtons() {

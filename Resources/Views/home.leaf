@@ -33,5 +33,6 @@
       </div>
     </div>
     <div id="neighbors"></div>
+    <button type="button">Done</button>
   </body>
 </html>
