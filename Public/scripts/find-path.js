@@ -1,3 +1,14 @@
+// The main entry point into the harmonic network.
+// Starts out on the "I" chord.
+// TODO: single tonic progression option
+// TODO: done option
+// TODO: try again? option
+function findPath() {
+  var path = ["I"];
+  var redo = Array();
+  continuePath(path, redo);
+};
+
 function continuePath(path, redo) {
   clearNeighborButtons()
   updatePathLabel(path);
@@ -46,17 +57,6 @@ function proceedWithChord(chord, path) {
   path.push(chord);
   continuePath(path, []);
 }
-
-// The main entry point into the harmonic network.
-// Starts out on the "I" chord.
-// TODO: single tonic progression option
-// TODO: done option
-// TODO: try again? option
-function findPath() {
-  var path = ["I"];
-  var redo = Array();
-  continuePath(path, redo);
-};
 
 // Update UI
 
