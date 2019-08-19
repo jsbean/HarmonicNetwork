@@ -10,8 +10,9 @@ function findPath() {
 };
 
 function continuePath(path, redo) {
-  clearNeighborButtons()
-  updatePathLabel(path);
+
+  // Prepare UI
+  clearNeighborButtons();
 
   prepareUndoButton(() => {
     // TODO: Refactor into an API call "undo"
@@ -25,7 +26,9 @@ function continuePath(path, redo) {
     continuePath(path,redo);
   });
 
+  // Update UI
   updateUndoRedo(path,redo);
+  updatePathLabel(path);
 
   // The current chord
   let current = path[path.length - 1];
