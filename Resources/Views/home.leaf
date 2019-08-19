@@ -26,5 +26,12 @@
   <body onload="findPath();">
     <h1>Harmonic Network</h1>
     <h2 id="path-label">Path</h2>
+    <div id="options">
+      <div id="undo-redo">
+        <button type="button" id="undo">Undo</button>
+        <button type="button" id="redo">Redo</button>
+      </div>
+    </div>
+    <div id="neighbors"></div>
   </body>
 </html>

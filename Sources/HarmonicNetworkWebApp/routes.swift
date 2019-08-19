@@ -16,7 +16,6 @@ public func routes(_ router: Router) throws {
 
     router.post(ChordNode.self, at: "neighbors") { request, value -> [String] in
         let chord = value.label
-        dump("incoming: \(chord)")
         return Array(bachMajor.neighbors(of: chord))
     }
 }
