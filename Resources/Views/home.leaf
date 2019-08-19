@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" href="css/find-path.css">
     <script src="/scripts/find-path.js"></script>      
     <!-- TODO: Move to own (utility) file -->
     <script type="text/javascript">
@@ -23,15 +24,17 @@
     </script>
   </head>
   <body onload="findPath();">
-    <h1>Harmonic Network</h1>
-    <h2 id="path-label">Path</h2>
-    <div id="options">
+    <div id="container">
+      <h1 id="title-label">Harmonic Network</h1>
+      <h2 id="path-label">Path</h2>
+      <div id="options">
       <div id="undo-redo">
-        <button type="button" id="undo">Undo</button>
         <button type="button" id="redo">Redo</button>
+        <button type="button" id="undo">Undo</button>
       </div>
     </div>
     <div id="neighbors"></div>
     <button type="button" id="done-start-over"></button>
+    </div>
   </body>
 </html>

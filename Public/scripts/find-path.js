@@ -60,6 +60,7 @@ function continuePath(path, redo) {
       // TODO: Reintegrate weights
       button.innerHTML = neighbor;
       button.name = neighbor;
+      button.className = "neighbor";
       button.onclick = () => proceedWithChord(neighbor, path);
       neighborsNode.insertBefore(button, neighborsNode.childNodes[0]);
     }
