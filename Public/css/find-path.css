@@ -1,0 +1,41 @@
+#container {
+  max-width: 400px;
+  margin: 0 auto;
+  float: none;
+  border: 1px solid powderblue;
+}
+
+#title-label {
+  text-align: center;
+}
+
+#path-label {
+  text-align: center;
+}
+
+#undo {
+  float: left;
+  width: 50%;
+}
+
+#redo {
+  float: right;
+  width: 50%;
+}
+
+#neighbors {
+  margin: 0;
+  float: none;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+.neighbor {
+  display: block;
+  width: 100%; 
+}
+
+#done-start-over {
+  width: 100%;
+  height: 50px;
+}

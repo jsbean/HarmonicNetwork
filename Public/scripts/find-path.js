@@ -1,93 +1,3 @@
-function continuePath(path, redo) {
-  
-  // Prepare undo redo div
-  createUndoRedoButtons(path, redo);
-
-  // The current chord
-  let current = path[path.length - 1];
-
-  // Create path label
-  let pathLabel = document.getElementById("path-label")
-  pathLabel.innerHTML = "Path: " + path;
-
-  // Create available neighbors div
-  let div = document.createElement("div");
-  div.name = "neighbors"
-  div.id = "neighbors"
-
-  // Collect only the nodes connected to `current`
-  let neighbors = bachMajor
-    .filter(function(edge) { return edge.source == current; })
-    .map(function(edge) {  
-      return { "node": edge.destination, "weight": edge.weight }
-    });
-
-  // Create buttons for each neighbor node
-  for (var i = 0; i < neighbors.length; i++) {
-    let neighbor = neighbors[i];
-    let button = document.createElement("button");
-    button.innerHTML = neighbor.node + ": " + neighbor.weight;
-    button.name = neighbor.node;
-    button.onclick = function() {
-      console.log("Clicked: " + button.name);
-      var neighborsNode = document.getElementById("neighbors");
-      neighborsNode.remove();
-      path.push(button.name);
-      continuePath(path, redo);  
-    }
-    div.insertBefore(button, div.childNodes[0]);
-  }
-
-  // Add neighbor buttons to body
-  var body = document.getElementsByTagName("body")[0];
-  body.appendChild(div);
-};
-
-function createUndoRedoButtons(path, redo) {
-
-  // Prepare the undo-redo div if it doesn't exist yet
-  var undoRedo = document.getElementById("undo-redo")
-  if (!undoRedo) {
-    undoRedo = document.createElement("div");
-    undoRedo.id = "undo-redo";
-  }
-
-  // Start clean: remove undo and redo buttons
-  while (undoRedo.hasChildNodes()) {
-    undoRedo.removeChild(undoRedo.lastChild);
-  }
-
-  // If we are past the "I" chord, allow user to "undo" last decision
-  if (path.length > 1) {
-    let undoButton = document.createElement("button");
-    undoButton.innerHTML = "Undo"
-    undoButton.onclick = function() {
-      redo.push(path.pop())
-      var neighborsNode = document.getElementById("neighbors");
-      neighborsNode.remove();
-      continuePath(path, redo);
-    };
-    undoRedo.appendChild(undoButton);
-  }
-
-  // If we have undone anything, expose a "redo" button
-  if (redo.length > 0) {
-    let redoButton = document.createElement("button");
-    redoButton.innerHTML = "Redo"
-    redoButton.onclick = function() {
-      var neighborsNode = document.getElementById("neighbors");
-      neighborsNode.remove();
-      path.push(redo.pop());
-      continuePath(path, redo);
-    };
-    undoRedo.appendChild(redoButton);
-  }
-
-  // Add the undo-redo div
-  var body = document.getElementsByTagName("body")[0];
-  body.append(undoRedo);
-};
-
 // The main entry point into the harmonic network.
 // Starts out on the "I" chord.
 // TODO: single tonic progression option
@@ -98,3 +8,136 @@ function findPath() {
   var redo = Array();
   continuePath(path, redo);
 };
+
+function continuePath(path, redo) {
+
+  // Prepare UI
+  clearNeighborButtons();
+
+  prepareDoneStartOverButton(() => {
+    updatePathLabel("All done: " + path);
+    disableUndoButton();
+    disableRedoButton();
+    clearNeighborButtons();
+    toggleDoneButtonToStartOver(() => {
+      findPath();
+    });
+  });
+
+  prepareUndoButton(() => {
+    // TODO: Refactor into an API call "undo"
+    redo.push(path.pop());
+    continuePath(path,redo);
+  });
+
+  prepareRedoButton(() => {
+    // TODO: Refactor into an API call "redo"
+    path.push(redo.pop());
+    continuePath(path,redo);
+  });
+
+  // Update UI
+  updateUndoRedo(path,redo);
+  updatePathLabel(path);
+
+  // The current chord
+  let current = path[path.length - 1];
+
+  updatePathLabel("Path: " + path);
+
+  // Collect only the nodes connected to `current`
+  // FIXME: Refactor using `await`
+  // Refactor body into own method
+  let neighborsNode = document.getElementById("neighbors");
+
+  // Make a POST request with the current chord label to the address: "neighbors"
+  post({ "label": current }, "neighbors", response => {
+    let neighbors = JSON.parse(response);
+    // Create buttons for each neighbor node
+    for (var i = 0; i < neighbors.length; i++) {
+      let neighbor = neighbors[i];
+      let button = document.createElement("button");
+      // TODO: Reintegrate weights
+      button.innerHTML = neighbor;
+      button.name = neighbor;
+      button.className = "neighbor";
+      button.onclick = () => proceedWithChord(neighbor, path);
+      neighborsNode.insertBefore(button, neighborsNode.childNodes[0]);
+    }
+  });
+};
+
+function proceedWithChord(chord, path) {
+  path.push(chord);
+  continuePath(path, []);
+}
+
+// Update UI
+
+function updateUndoRedo(path, redo) {
+  path.length > 1 ? enableUndoButton() : disableUndoButton();
+  redo.length > 0 ? enableRedoButton() : disableRedoButton();
+}
+
+function updatePathLabel(label) {
+  var pathLabel = document.getElementById("path-label");
+  pathLabel.innerHTML = label;
+}
+
+function toggleDoneButtonToStartOver(callback) {
+  console.log("toggle done button");
+  let button = document.getElementById("done-start-over");
+  button.onclick = callback;
+  button.innerHTML = "Start Over";
+}
+
+function enableRedoButton() {
+  let button = document.getElementById("redo");
+  button.disabled = false;
+}
+
+function disableRedoButton() {
+  let button = document.getElementById("redo");
+  button.disabled = true;
+}
+
+function enableUndoButton() {
+  let button = document.getElementById("undo");
+  button.disabled = false;
+}
+
+function disableUndoButton() {
+  let button = document.getElementById("undo");
+  button.disabled = true;
+}
+
+// Prepare UI
+
+function prepareDoneStartOverButton(callback) {
+  let button = document.getElementById("done-start-over");
+  button.onclick = callback;
+  button.innerHTML = "Done";
+}
+
+function prepareRedoButton(callback) {
+  let button = document.getElementById("redo")
+  button.innerHTML = "Redo"
+  button.onclick = callback;
+}
+
+function prepareUndoButton(callback) {
+  let button = document.getElementById("undo")
+  button.innerHTML = "Undo"
+  button.onclick = callback;
+}
+
+
+function clearUndoRedoButtons() {
+  var undoRedoNode = document.getElementById("undo-redo");
+  undoRedoNode.innerHTML = "";
+}
+
+function clearNeighborButtons() {
+  var neighborsNode = document.getElementById("neighbors");
+  neighborsNode.innerHTML = "";
+}
