@@ -19,9 +19,4 @@ public func routes(_ router: Router) throws {
         dump("incoming: \(chord)")
         return Array(bachMajor.neighbors(of: chord))
     }
-
-//    router.post(Value.self, at: "add") { request, value -> String in
-//        dump(value)
-//        return value.neighbor
-//    }
 }
