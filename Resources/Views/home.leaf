@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="/scripts/bach-major.js"></script>
     <script src="/scripts/find-path.js"></script>      
-
+    <!-- TODO: Move to own (utility) file -->
     <script type="text/javascript">
-
       // Send API Request with the given value, at the given url, with the given 
       // callback.
       function post(value, url, callback) {
