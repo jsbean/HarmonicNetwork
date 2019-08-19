@@ -14,6 +14,16 @@ function continuePath(path, redo) {
   // Prepare UI
   clearNeighborButtons();
 
+  prepareDoneStartOverButton(() => {
+    updatePathLabel("All done: " + path);
+    disableUndoButton();
+    disableRedoButton();
+    clearNeighborButtons();
+    toggleDoneButtonToStartOver(() => {
+      findPath();
+    });
+  });
+
   prepareUndoButton(() => {
     // TODO: Refactor into an API call "undo"
     redo.push(path.pop());
@@ -33,9 +43,7 @@ function continuePath(path, redo) {
   // The current chord
   let current = path[path.length - 1];
 
-  // Create path label
-  let pathLabel = document.getElementById("path-label")
-  pathLabel.innerHTML = "Path: " + path;
+  updatePathLabel("Path: " + path);
 
   // Collect only the nodes connected to `current`
   // FIXME: Refactor using `await`
@@ -70,22 +78,16 @@ function updateUndoRedo(path, redo) {
   redo.length > 0 ? enableRedoButton() : disableRedoButton();
 }
 
-function updatePathLabel(path) {
+function updatePathLabel(label) {
   var pathLabel = document.getElementById("path-label");
-  pathLabel.innerHTML = "Path: " + path;
-}
-// Prepare UI
-
-function prepareRedoButton(callback) {
-  let button = document.getElementById("redo")
-  button.innerHTML = "Redo"
-  button.onclick = callback;
+  pathLabel.innerHTML = label;
 }
 
-function prepareUndoButton(callback) {
-  let button = document.getElementById("undo")
-  button.innerHTML = "Undo"
+function toggleDoneButtonToStartOver(callback) {
+  console.log("toggle done button");
+  let button = document.getElementById("done-start-over");
   button.onclick = callback;
+  button.innerHTML = "Start Over";
 }
 
 function enableRedoButton() {
@@ -106,6 +108,32 @@ function enableUndoButton() {
 function disableUndoButton() {
   let button = document.getElementById("undo");
   button.disabled = true;
+}
+
+// Prepare UI
+
+function prepareDoneStartOverButton(callback) {
+  let button = document.getElementById("done-start-over");
+  button.onclick = callback;
+  button.innerHTML = "Done";
+}
+
+function prepareRedoButton(callback) {
+  let button = document.getElementById("redo")
+  button.innerHTML = "Redo"
+  button.onclick = callback;
+}
+
+function prepareUndoButton(callback) {
+  let button = document.getElementById("undo")
+  button.innerHTML = "Undo"
+  button.onclick = callback;
+}
+
+
+function clearUndoRedoButtons() {
+  var undoRedoNode = document.getElementById("undo-redo");
+  undoRedoNode.innerHTML = "";
 }
 
 function clearNeighborButtons() {

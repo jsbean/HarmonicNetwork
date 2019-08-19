@@ -21,7 +21,6 @@
         httpRequest.send(JSON.stringify(value));
       }
     </script>
-
   </head>
   <body onload="findPath();">
     <h1>Harmonic Network</h1>
@@ -33,6 +32,6 @@
       </div>
     </div>
     <div id="neighbors"></div>
-    <button type="button">Done</button>
+    <button type="button" id="done-start-over"></button>
   </body>
 </html>
