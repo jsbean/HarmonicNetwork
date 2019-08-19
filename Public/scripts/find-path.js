@@ -16,18 +16,17 @@ function continuePath(path, redo) {
   div.id = "neighbors"
 
   // Collect only the nodes connected to `current`
-  // FIXME: Refactor into using `await`
+  // FIXME: Refactor using `await`
   post({ "label": current }, "neighbors", response => {
-      // let label = document.getElementById("path-label");
-      // label.innerHTML = "Current: " + response;
       let neighbors = JSON.parse(response);
       console.log(response);
       // Create buttons for each neighbor node
       for (var i = 0; i < neighbors.length; i++) {
         let neighbor = neighbors[i];
         let button = document.createElement("button");
-        button.innerHTML = neighbor/*.node + ": " + neighbor.weight*/;
-        button.name = neighbor/*.node*/;
+        // TODO: Reintegrate weights
+        button.innerHTML = neighbor;
+        button.name = neighbor;
         button.onclick = function() {
           var neighborsNode = document.getElementById("neighbors");
           neighborsNode.remove();
