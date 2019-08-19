@@ -16,31 +16,31 @@ function continuePath(path, redo) {
   div.id = "neighbors"
 
   // Collect only the nodes connected to `current`
-  let neighbors = bachMajor
-    .filter(function(edge) { return edge.source == current; })
-    .map(function(edge) {  
-      return { "node": edge.destination, "weight": edge.weight }
+  // FIXME: Refactor into using `await`
+  post({ "label": current }, "neighbors", response => {
+      // let label = document.getElementById("path-label");
+      // label.innerHTML = "Current: " + response;
+      let neighbors = JSON.parse(response);
+      console.log(response);
+      // Create buttons for each neighbor node
+      for (var i = 0; i < neighbors.length; i++) {
+        let neighbor = neighbors[i];
+        let button = document.createElement("button");
+        button.innerHTML = neighbor/*.node + ": " + neighbor.weight*/;
+        button.name = neighbor/*.node*/;
+        button.onclick = function() {
+          var neighborsNode = document.getElementById("neighbors");
+          neighborsNode.remove();
+          path.push(button.name);
+          continuePath(path, redo);  
+        }
+        div.insertBefore(button, div.childNodes[0]);
+      }
+
+      // Add neighbor buttons to body
+      var body = document.getElementsByTagName("body")[0];
+      body.appendChild(div);
     });
-
-  // Create buttons for each neighbor node
-  for (var i = 0; i < neighbors.length; i++) {
-    let neighbor = neighbors[i];
-    let button = document.createElement("button");
-    button.innerHTML = neighbor.node + ": " + neighbor.weight;
-    button.name = neighbor.node;
-    button.onclick = function() {
-      console.log("Clicked: " + button.name);
-      var neighborsNode = document.getElementById("neighbors");
-      neighborsNode.remove();
-      path.push(button.name);
-      continuePath(path, redo);  
-    }
-    div.insertBefore(button, div.childNodes[0]);
-  }
-
-  // Add neighbor buttons to body
-  var body = document.getElementsByTagName("body")[0];
-  body.appendChild(div);
 };
 
 function createUndoRedoButtons(path, redo) {
