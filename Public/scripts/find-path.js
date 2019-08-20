@@ -1,3 +1,7 @@
+// Constants
+const nodeWidth = 50;
+const nodeDistance = 115;
+
 // The main entry point into the harmonic network.
 // Starts out on the "I" chord.
 // TODO: single tonic progression option
@@ -9,10 +13,14 @@ function findPath() {
 
 function continuePath(path, redo) {
 
+  const width = 400;
+  const height = 400;
+  const centroid = { "x": 0.5 * width, "y": 0.5 * height };
+
   const container = document.getElementById("container");
   const svgContainer = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svgContainer.setAttribute("width", 400);
-  svgContainer.setAttribute("height", 400);
+  svgContainer.setAttribute("width", width);
+  svgContainer.setAttribute("height", height);
 
   prepareDoneStartOverButton(() => {
     updatePathLabel("All done: " + path);
@@ -40,8 +48,6 @@ function continuePath(path, redo) {
   updatePathLabel(path);
   updatePathLabel("Path: " + path);
 
-  
-
   // The current chord
   let current = path[path.length - 1];
 
@@ -57,19 +63,17 @@ function continuePath(path, redo) {
       // Extract model
       let neighbor = neighbors[i];
 
-      const distance = 115;
-
-      const startAngleInRadians = -(1/neighbors.length) * 1.5 * Math.PI;
+      const startAngleInRadians = -0.5 * Math.PI;
       const angleInRadians = (i / neighbors.length) * 2 * Math.PI + startAngleInRadians;
-      const x = 200 + distance * Math.cos(angleInRadians);
-      const y = 200 + distance * Math.sin(angleInRadians);
+      const x = centroid.x + nodeDistance * Math.cos(angleInRadians);
+      const y = centroid.y + nodeDistance * Math.sin(angleInRadians);
 
       // Create node
       const neighborNode = makeNode(
         neighbor.label, 
         /*x*/ x, 
         /*y*/ y, 
-        /*width*/ 50, 
+        /*width*/ nodeWidth,
         "lightgray",
         () => { 
           container.removeChild(svgContainer);
@@ -78,22 +82,17 @@ function continuePath(path, redo) {
       );
 
       // Create arrow from source to each neighbor
-      const edge = makeEdge({ "x": 200, "y": 200 }, { "x": x, "y": y });
+      const edgeX = centroid.x + (nodeDistance - 0.5 * nodeWidth) * Math.cos(angleInRadians);
+      const edgeY = centroid.y + (nodeDistance - 0.5 * nodeWidth) * Math.sin(angleInRadians);
+      const edge = makeEdge(centroid, { "x": edgeX, "y": edgeY });
       svgContainer.appendChild(edge);
 
       // Compose SVG
       svgContainer.appendChild(neighborNode);
 
-      const currentNode = makeNode("I", 200, 200, 50, "gray");
+      const currentNode = makeNode(current, centroid.x, centroid.y, nodeWidth, "gray");
       svgContainer.appendChild(currentNode);
       container.appendChild(svgContainer);
-      // let button = document.createElement("button");
-      // // TODO: Reintegrate weights
-      // button.innerHTML = neighbor.label + ": " + neighbor.probability;
-      // button.name = neighbor;
-      // button.className = "neighbor";
-      // button.onclick = () => proceedWithChord(neighbor.label, path);
-      // neighborsNode.insertBefore(button, neighborsNode.childNodes[0]);
     }
   });
 };
