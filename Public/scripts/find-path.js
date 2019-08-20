@@ -44,7 +44,7 @@ function continuePath(path, redo) {
   });
 
   // Update UI
-  // updateUndoRedo(path,redo);
+  updateUndoRedo(path,redo);
   updatePathLabel(path);
   updatePathLabel("Path: " + path);
 
