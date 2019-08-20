@@ -10,7 +10,7 @@ extension Collection where Element: Equatable {
     /// - Warning: This is accidentally quadratic. If for some reason performance ever becomes an
     ///         issue here (if we have like a million chords all of a sudden), consider implementing
     ///         this in a more performant manner using a dictionary to store indices.
-    func reordered(by preferredOrder: [Element]) -> [Element] {
+    public func reordered(by preferredOrder: [Element]) -> [Element] {
         return sorted { (a, b) -> Bool in
             guard let first = preferredOrder.firstIndex(of: a) else { return false }
             guard let second = preferredOrder.firstIndex(of: b) else { return true }
@@ -22,7 +22,7 @@ extension Collection where Element: Equatable {
 /// The preferred ordering of roman numeral chord names.
 ///
 /// - Note: This must be updated when more chords are added.
-let orderedRomanNumerals = [
+public let orderedRomanNumerals = [
     "I",
     "I6",
     "ii",

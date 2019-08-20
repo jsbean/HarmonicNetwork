@@ -16,6 +16,6 @@ public func routes(_ router: Router) throws {
 
     router.post(ChordNode.self, at: "neighbors") { request, value -> [String] in
         let chord = value.label
-        return Array(bachMajor.neighbors(of: chord))
+        return bachMajor.neighbors(of: chord).reordered(by: orderedRomanNumerals)
     }
 }

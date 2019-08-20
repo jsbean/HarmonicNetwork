@@ -54,7 +54,7 @@ function continuePath(path, redo) {
 
     let neighbors = JSON.parse(response);
     // Create buttons for each neighbor node
-    for (var i = 0; i < neighbors.length; i++) {
+    for (var i = neighbors.length - 1; i >= 0; i--) {
       let neighbor = neighbors[i];
       let button = document.createElement("button");
       // TODO: Reintegrate weights
