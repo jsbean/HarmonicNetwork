@@ -49,7 +49,6 @@ function continuePath(path, redo) {
 
   // Make a POST request with the current chord label to the address: "neighbors"
   post({ "label": current }, "neighbors", response => {
-
     clearNeighborButtons()
 
     let neighbors = JSON.parse(response);
@@ -58,10 +57,10 @@ function continuePath(path, redo) {
       let neighbor = neighbors[i];
       let button = document.createElement("button");
       // TODO: Reintegrate weights
-      button.innerHTML = neighbor;
+      button.innerHTML = neighbor.label + ": " + neighbor.probability;
       button.name = neighbor;
       button.className = "neighbor";
-      button.onclick = () => proceedWithChord(neighbor, path);
+      button.onclick = () => proceedWithChord(neighbor.label, path);
       neighborsNode.insertBefore(button, neighborsNode.childNodes[0]);
     }
   });

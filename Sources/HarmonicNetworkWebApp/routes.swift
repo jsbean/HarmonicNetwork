@@ -10,12 +10,24 @@ public func routes(_ router: Router) throws {
         return try request.view().render("home")
     }
 
-    struct ChordNode: Content {
+    struct SelectedChord: Content {
         let label: String
     }
 
-    router.post(ChordNode.self, at: "neighbors") { request, value -> [String] in
+    struct WeightedChordNode: Content {
+        let label: String
+        let probability: String
+    }
+
+    router.post(SelectedChord.self, at: "neighbors") { request, value -> [WeightedChordNode] in
         let chord = value.label
-        return bachMajor.neighbors(of: chord).reordered(by: orderedRomanNumerals)
+        return bachMajor
+            .neighbors(of: chord)
+            .reordered(by: orderedRomanNumerals)
+            .map { other in
+                let weight = bachMajor.weight(from: chord, to: other)!
+                let probabilityDisplay = "\(Int((weight * 100).rounded()))%"
+                return WeightedChordNode(label: other, probability: probabilityDisplay)
+            }
     }
 }
