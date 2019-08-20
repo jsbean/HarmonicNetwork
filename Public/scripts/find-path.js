@@ -15,6 +15,7 @@ function continuePath(path, redo) {
     updatePathLabel("All done: " + path);
     disableUndoButton();
     disableRedoButton();
+    clearNeighborButtons();
     toggleDoneButtonToStartOver(() => {
       findPath();
     });
