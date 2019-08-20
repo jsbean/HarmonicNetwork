@@ -9,64 +9,84 @@ function findPath() {
 
 function continuePath(path, redo) {
 
-  // prepareDoneStartOverButton(() => {
-  //   updatePathLabel("All done: " + path);
-  //   disableUndoButton();
-  //   disableRedoButton();
-  //   clearNeighborButtons();
-  //   toggleDoneButtonToStartOver(() => {
-  //     findPath();
-  //   });
-  // });
-
-  // prepareUndoButton(() => {
-  //   // TODO: Refactor into an API call "undo"
-  //   redo.push(path.pop());
-  //   continuePath(path,redo);
-  // });
-
-  // prepareRedoButton(() => {
-  //   // TODO: Refactor into an API call "redo"
-  //   path.push(redo.pop());
-  //   continuePath(path,redo);
-  // });
-
-  // Update UI
-  // updateUndoRedo(path,redo);
-  updatePathLabel(path);
-
-  // The current chord
-  let current = path[path.length - 1];
-
-  updatePathLabel("Path: " + path);
-
-  // Collect only the nodes connected to `current`
-  // FIXME: Refactor using `await`
-  // Refactor body into own method
-  let neighborsNode = document.getElementById("neighbors");
-
   const container = document.getElementById("container");
   const svgContainer = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svgContainer.setAttribute("width", 400);
   svgContainer.setAttribute("height", 400);
 
-  const currentNode = makeNode("I", 200, 200, 50, "gray");
+  prepareDoneStartOverButton(() => {
+    updatePathLabel("All done: " + path);
+    disableUndoButton();
+    disableRedoButton();  
+    toggleDoneButtonToStartOver(() => {
+      findPath();
+    });
+  });
 
-  // attach it to the container
-  svgContainer.appendChild(currentNode);
+  prepareUndoButton(() => {
+    // TODO: Refactor into an API call "undo"
+    redo.push(path.pop());
+    continuePath(path,redo);
+  });
+
+  prepareRedoButton(() => {
+    // TODO: Refactor into an API call "redo"
+    path.push(redo.pop());
+    continuePath(path,redo);
+  });
+
+  // Update UI
+  // updateUndoRedo(path,redo);
+  updatePathLabel(path);
+  updatePathLabel("Path: " + path);
+
   
+
+  // The current chord
+  let current = path[path.length - 1];
 
   // Make a POST request with the current chord label to the address: "neighbors"
   post({ "label": current }, "neighbors", response => {
 
+    // Parse response (array of type { "label": String, "probability": Number })
     let neighbors = JSON.parse(response);
+
     // Create buttons for each neighbor node
     for (var i = neighbors.length - 1; i >= 0; i--) {
+
+      // Extract model
       let neighbor = neighbors[i];
-      const neighborNode = makeNode(neighbor.label, Math.random() * 300 + 50, Math.random() * 300 + 50, 50, "lightgray");
+
+      const distance = 115;
+
+      const startAngleInRadians = -(1/neighbors.length) * 1.5 * Math.PI;
+      const angleInRadians = (i / neighbors.length) * 2 * Math.PI + startAngleInRadians;
+      const x = 200 + distance * Math.cos(angleInRadians);
+      const y = 200 + distance * Math.sin(angleInRadians);
+
+      // Create node
+      const neighborNode = makeNode(
+        neighbor.label, 
+        /*x*/ x, 
+        /*y*/ y, 
+        /*width*/ 50, 
+        "lightgray",
+        () => { 
+          container.removeChild(svgContainer);
+          proceedWithChord(neighbor.label, path)
+        }
+      );
+
+      // Create arrow from source to each neighbor
+      const edge = makeEdge({ "x": 200, "y": 200 }, { "x": x, "y": y });
+      svgContainer.appendChild(edge);
+
+      // Compose SVG
       svgContainer.appendChild(neighborNode);
 
-      
+      const currentNode = makeNode("I", 200, 200, 50, "gray");
+      svgContainer.appendChild(currentNode);
+      container.appendChild(svgContainer);
       // let button = document.createElement("button");
       // // TODO: Reintegrate weights
       // button.innerHTML = neighbor.label + ": " + neighbor.probability;
@@ -76,13 +96,24 @@ function continuePath(path, redo) {
       // neighborsNode.insertBefore(button, neighborsNode.childNodes[0]);
     }
   });
-
-  container.appendChild(svgContainer);
 };
+
+function makeEdge(source, destination) {
+  const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  line.setAttribute("x1", source.x);
+  line.setAttribute("y1", source.y);
+  line.setAttribute("x2", destination.x);
+  line.setAttribute("y2", destination.y);
+  line.setAttribute("stroke", "lightgray");
+  group.appendChild(line);
+  return group
+}
 
 function makeNode(text, x, y, width, color, callback) {
   // Create group container
-  const container = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  group.onclick = callback;
   // Create circle
   const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
   circle.setAttribute("cx", x);
@@ -99,10 +130,12 @@ function makeNode(text, x, y, width, color, callback) {
   label.setAttribute("fill", "white");
   label.setAttribute("text-anchor", "middle");
   label.setAttribute("dy", ".3em");
+  label.setAttribute("pointer-events", "none");
+  label.onclick = callback;
   // Compose SVG
-  container.appendChild(circle);
-  container.appendChild(label);
-  return container
+  group.appendChild(circle);
+  group.appendChild(label);
+  return group
 }
 
 function proceedWithChord(chord, path) {
@@ -178,4 +211,8 @@ function clearUndoRedoButtons() {
 function clearNeighborButtons() {
   var neighborsNode = document.getElementById("neighbors");
   neighborsNode.innerHTML = "";
+}
+
+function removeChildren(node) {
+    node.innerHTML = "";
 }
