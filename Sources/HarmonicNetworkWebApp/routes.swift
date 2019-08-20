@@ -20,14 +20,15 @@ public func routes(_ router: Router) throws {
     }
 
     router.post(SelectedChord.self, at: "neighbors") { request, value -> [WeightedChordNode] in
-        let chord = value.label
-        return bachMajor
-            .neighbors(of: chord)
+        let selected = value.label
+        let neighbors = bachMajor.neighbors(of: selected)
+        let factor = 1 / neighbors.map { bachMajor.weight(from: selected, to: $0)! }.sum
+        return neighbors
             .reordered(by: orderedRomanNumerals)
-            .map { other in
-                let weight = bachMajor.weight(from: chord, to: other)!
+            .map { neighbor in
+                let weight = bachMajor.weight(from: selected, to: neighbor)! * factor
                 let probabilityDisplay = "\(Int((weight * 100).rounded()))%"
-                return WeightedChordNode(label: other, probability: probabilityDisplay)
+                return WeightedChordNode(label: neighbor, probability: probabilityDisplay)
             }
     }
 }
