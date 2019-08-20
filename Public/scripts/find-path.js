@@ -54,8 +54,12 @@ function continuePath(path, redo) {
   // Make a POST request with the current chord label to the address: "neighbors"
   post({ "label": current }, "neighbors", response => {
 
-    // Parse response (array of type { "label": String, "probability": Number })
+    // Parse response (array of type { "label": String, "weight": Number })
     let neighbors = JSON.parse(response);
+
+    let weights = neighbors.map(color => color.weight)
+    let heaviest = Math.max(...weights);
+    let colorAdjust = 1 - heaviest;
 
     // Create buttons for each neighbor node
     for (var i = neighbors.length - 1; i >= 0; i--) {
@@ -81,10 +85,21 @@ function continuePath(path, redo) {
         }
       );
 
+      let colorValue = 1 - (neighbor.weight / heaviest)
+
+      let edgeConnectionPoint = {
+        "x": centroid.x + (nodeDistance - 0.5 * nodeWidth) * Math.cos(angleInRadians),
+        "y": centroid.y + (nodeDistance - 0.5 * nodeWidth) * Math.sin(angleInRadians)
+      }
+
       // Create arrow from source to each neighbor
-      const edgeX = centroid.x + (nodeDistance - 0.5 * nodeWidth) * Math.cos(angleInRadians);
-      const edgeY = centroid.y + (nodeDistance - 0.5 * nodeWidth) * Math.sin(angleInRadians);
-      const edge = makeEdge(centroid, { "x": edgeX, "y": edgeY });
+      let color = "rgb(" + 
+        Math.round(colorValue * 256) + "," +
+        Math.round(colorValue * 256) + "," +
+        Math.round(colorValue * 256) +
+      ")"
+
+      const edge = makeEdge(centroid, edgeConnectionPoint, color);
       svgContainer.appendChild(edge);
 
       // Compose SVG
@@ -97,16 +112,58 @@ function continuePath(path, redo) {
   });
 };
 
-function makeEdge(source, destination) {
+function makeEdge(source, destination, color) {
+
+  let dx = destination.x - source.x
+  let dy = destination.y - source.y
+  let angle = Math.atan2(dy,dx);
+
+  // FIXME: Factor out magic number '5'
+  let lineEndX = destination.x - 5 * Math.cos(angle);
+  let lineEndY = destination.y - 5 * Math.sin(angle);
+  const line = makeLine(source, { "x": lineEndX, "y": lineEndY }, color);
+  const arrowhead = makeArrowhead(destination, angle, color);
+
+  // Compose SVG
   const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  group.appendChild(line);
+  group.appendChild(arrowhead);
+  return group
+}
+
+function makeArrowhead(point, angle, color) {
+  const arrowhead = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  let sideLength = 10;
+  let angleA = angle - (Math.PI / 7);
+  let angleB = angle + (Math.PI / 7);
+  let ax = point.x - sideLength * Math.cos(angleA);
+  let ay = point.y - sideLength * Math.sin(angleA);
+  let bx = point.x - sideLength * Math.cos(angleB);
+  let by = point.y - sideLength * Math.sin(angleB);
+  // In the bay of the barb
+  let cx = point.x - 0.75 * sideLength * Math.cos(angle);
+  let cy = point.y - 0.75 * sideLength * Math.sin(angle);
+  // Set path
+  arrowhead.setAttribute("d",
+    "M " + point.x + " " + point.y + " " +
+    "L " + ax + " " + ay + " " +
+    "L " + cx + " " + cy + " " +
+    "L " + bx + " " + by + " " +
+    "Z"
+  );
+  arrowhead.setAttribute("fill", color);
+  return arrowhead
+}
+
+function makeLine(source, destination, color) {
   const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
   line.setAttribute("x1", source.x);
   line.setAttribute("y1", source.y);
   line.setAttribute("x2", destination.x);
   line.setAttribute("y2", destination.y);
-  line.setAttribute("stroke", "lightgray");
-  group.appendChild(line);
-  return group
+  line.setAttribute("stroke", color);
+  line.setAttribute("stroke-width", 2);
+  return line
 }
 
 function makeNode(text, x, y, width, color, callback) {
@@ -155,7 +212,6 @@ function updatePathLabel(label) {
 }
 
 function toggleDoneButtonToStartOver(callback) {
-  console.log("toggle done button");
   let button = document.getElementById("done-start-over");
   button.onclick = callback;
   button.innerHTML = "Start Over";
