@@ -11,14 +11,10 @@ function findPath() {
 
 function continuePath(path, redo) {
 
-  // Prepare UI
-  clearNeighborButtons();
-
   prepareDoneStartOverButton(() => {
     updatePathLabel("All done: " + path);
     disableUndoButton();
     disableRedoButton();
-    clearNeighborButtons();
     toggleDoneButtonToStartOver(() => {
       findPath();
     });
@@ -52,6 +48,9 @@ function continuePath(path, redo) {
 
   // Make a POST request with the current chord label to the address: "neighbors"
   post({ "label": current }, "neighbors", response => {
+
+    clearNeighborButtons()
+
     let neighbors = JSON.parse(response);
     // Create buttons for each neighbor node
     for (var i = 0; i < neighbors.length; i++) {
