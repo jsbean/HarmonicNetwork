@@ -62,8 +62,23 @@ function continuePath(path, redo) {
     let heaviest = Math.max(...weights);
     let colorAdjust = 1 - heaviest;
 
-    // FIXME: Only remove nodes that are currently present, but shan't remain
-    removeChildren(svgContainer);
+    // Remove extant nodes that no longer belong
+    // TODO: Wrap up in function
+    const currentNodes = Array.from(svgContainer.childNodes);
+    for (var i = currentNodes.length - 1; i >= 0; i--) {
+      const currentNode = currentNodes[i];
+      var needsNode = true;
+      for (var j = neighbors.length - 1; j >= 0; j--) {
+        const neighbor = neighbors[j];
+        if (!currentNode.id.includes(neighbor.label)) {
+          needsNode = false;
+          break;
+        }
+      }
+      if (!needsNode) {
+        currentNode.remove();
+      }
+    }
 
     // Create buttons for each neighbor node
     for (var i = neighbors.length - 1; i >= 0; i--) {
@@ -99,13 +114,14 @@ function continuePath(path, redo) {
       );
 
       // Create arrow from source to each neighbor
-      let color = "rgb(" + 
+      let color = "rgb(" +
         Math.round(colorValue * 256) + "," +
         Math.round(colorValue * 256) + "," +
         Math.round(colorValue * 256) +
       ")"
 
-      const edge = makeEdge(centroid, edgeConnectionPoint, color);
+      const edgeID = current + " " + neighbor.label
+      const edge = makeEdge(centroid, edgeConnectionPoint, edgeID, color);
       svgContainer.appendChild(edge);
 
       // Compose SVG
@@ -118,7 +134,7 @@ function continuePath(path, redo) {
   });
 };
 
-function makeEdge(source, destination, color) {
+function makeEdge(source, destination, id, color) {
 
   let dx = destination.x - source.x
   let dy = destination.y - source.y
@@ -134,6 +150,8 @@ function makeEdge(source, destination, color) {
 
   // Compose SVG
   const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  group.setAttribute("class", "edge");
+  group.setAttribute("id", id);
   group.appendChild(line);
   group.appendChild(arrowhead);
   return group
@@ -277,10 +295,6 @@ function clearUndoRedoButtons() {
 function clearNeighborButtons() {
   var neighborsNode = document.getElementById("neighbors");
   neighborsNode.innerHTML = "";
-}
-
-function removeChildren(node) {
-    node.innerHTML = "";
 }
 
 // TODO: Move to geometry.js
