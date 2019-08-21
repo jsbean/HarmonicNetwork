@@ -118,6 +118,7 @@ function continuePath(path, redo) {
   });
 };
 
+// TODO: Refactor into class Edge
 function makeEdge(source, destination, color) {
 
   let dx = destination.x - source.x
@@ -139,6 +140,7 @@ function makeEdge(source, destination, color) {
   return group
 }
 
+// TODO: Refactor into class Arrowhead
 function makeArrowhead(point, angle, color) {
   const arrowhead = document.createElementNS("http://www.w3.org/2000/svg", "path");
   let sideLength = 10;
@@ -163,6 +165,7 @@ function makeArrowhead(point, angle, color) {
   return arrowhead
 }
 
+// TODO: Refactor into class Line
 function makeLine(source, destination, color) {
   const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
   line.setAttribute("x1", source.x);
@@ -174,6 +177,7 @@ function makeLine(source, destination, color) {
   return line
 }
 
+// TODO: Refactor into class ChordNode
 function makeNode(text, position, width, color, callback) {
 
   // Create group container
