@@ -59,7 +59,7 @@ function continuePath(path, redo) {
       const edges = viewModel.edges;
 
       // Add edges (first for now for layering behind nodes)
-      // FIXME: Add edges group
+      // TODO: Add edges group
       edges.forEach(edgeViewModel => {
         console.log(edgeViewModel);
         const edgeView = makeEdge(
@@ -71,8 +71,8 @@ function continuePath(path, redo) {
           svgContainer.appendChild(edgeView);
       });
 
-      // Add nodes (first for now for layering behind nodes)
-      // FIXME: Add nodes group
+      // Add nodes (first for now for layering in front of edges)
+      // TODO: Add nodes group
       nodes.forEach(nodeViewModel => {
         const nodeView = makeNode(
           nodeViewModel.label, 
