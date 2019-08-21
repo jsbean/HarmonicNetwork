@@ -201,6 +201,7 @@ function makeNode(text, position, width, color, callback) {
   group.appendChild(circle);
   group.appendChild(label);
   group.setAttribute("id", text);
+  group.setAttribute("class", "node");
   return group
 }
 
