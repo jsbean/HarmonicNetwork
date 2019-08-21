@@ -16,7 +16,7 @@ public func routes(_ router: Router) throws {
 
     struct WeightedChordNode: Content {
         let label: String
-        let probability: String
+        let weight: Double
     }
 
     router.post(SelectedChord.self, at: "neighbors") { request, value -> [WeightedChordNode] in
@@ -27,8 +27,7 @@ public func routes(_ router: Router) throws {
             .reordered(by: orderedRomanNumerals)
             .map { neighbor in
                 let weight = bachMajor.weight(from: selected, to: neighbor)! * factor
-                let probabilityDisplay = "\(Int((weight * 100).rounded()))%"
-                return WeightedChordNode(label: neighbor, probability: probabilityDisplay)
+                return WeightedChordNode(label: neighbor, weight: weight)
             }
     }
 }
