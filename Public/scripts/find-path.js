@@ -62,7 +62,7 @@ function continuePath(path, redo) {
     let heaviest = Math.max(...weights);
     let colorAdjust = 1 - heaviest;
 
-    // clear nodes
+    // FIXME: Only remove nodes that are currently present, but shan't remain
     removeChildren(svgContainer);
 
     // Create buttons for each neighbor node
@@ -80,6 +80,7 @@ function continuePath(path, redo) {
       );
 
       // Create node
+      // FIXME: Only create node is currently not present, but is needed
       const neighborNode = makeNode(
         neighbor.label, 
         position,
@@ -199,6 +200,7 @@ function makeNode(text, position, width, color, callback) {
   // Compose SVG
   group.appendChild(circle);
   group.appendChild(label);
+  group.setAttribute("id", text);
   return group
 }
 
