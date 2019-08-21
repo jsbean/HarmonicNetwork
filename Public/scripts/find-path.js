@@ -113,7 +113,7 @@ function continuePath(path, redo) {
 
       const currentNode = makeNode(current, centroid, nodeWidth, "gray");
       svgContainer.appendChild(currentNode);
-      container.appendChild(svgContainer);
+      container.insertBefore(svgContainer, container.childNodes[0]);
     }
   });
 };
