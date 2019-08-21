@@ -18,7 +18,7 @@ function continuePath(path, redo) {
   const centroid = { "x": 0.5 * width, "y": 0.5 * height };
 
   const container = document.getElementById("container");
-  const svgContainer = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  const svgContainer = document.getElementById("graph-view");
   svgContainer.setAttribute("width", width);
   svgContainer.setAttribute("height", height);
 
@@ -61,6 +61,9 @@ function continuePath(path, redo) {
     let heaviest = Math.max(...weights);
     let colorAdjust = 1 - heaviest;
 
+    // clear nodes
+    removeChildren(svgContainer);
+
     // Create buttons for each neighbor node
     for (var i = neighbors.length - 1; i >= 0; i--) {
 
@@ -80,7 +83,6 @@ function continuePath(path, redo) {
         /*width*/ nodeWidth,
         "lightgray",
         () => { 
-          container.removeChild(svgContainer);
           proceedWithChord(neighbor.label, path)
         }
       );
@@ -162,7 +164,7 @@ function makeLine(source, destination, color) {
   line.setAttribute("x2", destination.x);
   line.setAttribute("y2", destination.y);
   line.setAttribute("stroke", color);
-  line.setAttribute("stroke-width", 2);
+  line.setAttribute("stroke-width", 1.5);
   return line
 }
 

@@ -27,6 +27,7 @@
     <div id="container">
       <h1 id="title-label">Harmonic Network</h1>
       <h2 id="path-label">Path</h2>
+      <svg id="graph-view"></svg>
       <div id="options">
       <div id="undo-redo">
         <button type="button" id="redo">Redo</button>
