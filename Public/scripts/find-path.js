@@ -13,9 +13,10 @@ function findPath() {
 
 function continuePath(path, redo) {
 
+  // FIXME: Derive size from screen
   const width = 400;
   const height = 400;
-  const centroid = { "x": 0.5 * width, "y": 0.5 * height };
+  const centroid = new Point(0.5 * width, 0.5 * height);
 
   const container = document.getElementById("container");
   const svgContainer = document.getElementById("graph-view");
@@ -70,17 +71,19 @@ function continuePath(path, redo) {
       // Extract model
       let neighbor = neighbors[i];
 
+      // Compute position of neighbor node
       const startAngleInRadians = -0.5 * Math.PI;
       const angleInRadians = (i / neighbors.length) * 2 * Math.PI + startAngleInRadians;
-      const x = centroid.x + nodeDistance * Math.cos(angleInRadians);
-      const y = centroid.y + nodeDistance * Math.sin(angleInRadians);
+      const position = new Point(
+        centroid.x + nodeDistance * Math.cos(angleInRadians),
+        centroid.y + nodeDistance * Math.sin(angleInRadians)
+      );
 
       // Create node
       const neighborNode = makeNode(
         neighbor.label, 
-        /*x*/ x, 
-        /*y*/ y, 
-        /*width*/ nodeWidth,
+        position,
+        nodeWidth,
         "lightgray",
         () => { 
           proceedWithChord(neighbor.label, path)
@@ -89,10 +92,10 @@ function continuePath(path, redo) {
 
       let colorValue = 1 - (neighbor.weight / heaviest)
 
-      let edgeConnectionPoint = {
-        "x": centroid.x + (nodeDistance - 0.5 * nodeWidth) * Math.cos(angleInRadians),
-        "y": centroid.y + (nodeDistance - 0.5 * nodeWidth) * Math.sin(angleInRadians)
-      }
+      let edgeConnectionPoint = new Point(
+        centroid.x + (nodeDistance - 0.5 * nodeWidth) * Math.cos(angleInRadians),
+        centroid.y + (nodeDistance - 0.5 * nodeWidth) * Math.sin(angleInRadians)
+      );
 
       // Create arrow from source to each neighbor
       let color = "rgb(" + 
@@ -107,7 +110,7 @@ function continuePath(path, redo) {
       // Compose SVG
       svgContainer.appendChild(neighborNode);
 
-      const currentNode = makeNode(current, centroid.x, centroid.y, nodeWidth, "gray");
+      const currentNode = makeNode(current, centroid, nodeWidth, "gray");
       svgContainer.appendChild(currentNode);
       container.appendChild(svgContainer);
     }
@@ -121,9 +124,11 @@ function makeEdge(source, destination, color) {
   let angle = Math.atan2(dy,dx);
 
   // FIXME: Factor out magic number '5'
-  let lineEndX = destination.x - 5 * Math.cos(angle);
-  let lineEndY = destination.y - 5 * Math.sin(angle);
-  const line = makeLine(source, { "x": lineEndX, "y": lineEndY }, color);
+  const lineEnd = new Point(
+    destination.x - 5 * Math.cos(angle),
+    destination.y - 5 * Math.sin(angle)
+  ); 
+  const line = makeLine(source, lineEnd, color);
   const arrowhead = makeArrowhead(destination, angle, color);
 
   // Compose SVG
@@ -168,14 +173,15 @@ function makeLine(source, destination, color) {
   return line
 }
 
-function makeNode(text, x, y, width, color, callback) {
+function makeNode(text, position, width, color, callback) {
+
   // Create group container
   const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
   group.onclick = callback;
   // Create circle
   const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-  circle.setAttribute("cx", x);
-  circle.setAttribute("cy", y);
+  circle.setAttribute("cx", position.x);
+  circle.setAttribute("cy", position.y);
   circle.setAttribute("r", 0.5 * width);
   circle.setAttribute("fill", color);
   circle.setAttribute("stroke", "gray");
@@ -183,8 +189,8 @@ function makeNode(text, x, y, width, color, callback) {
   const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
   label.textContent = text;
   label.setAttribute("font-size", width / 3);
-  label.setAttribute("x", x);
-  label.setAttribute("y", y);
+  label.setAttribute("x", position.x);
+  label.setAttribute("y", position.y);
   label.setAttribute("fill", "white");
   label.setAttribute("text-anchor", "middle");
   label.setAttribute("dy", ".3em");
@@ -272,4 +278,10 @@ function clearNeighborButtons() {
 
 function removeChildren(node) {
     node.innerHTML = "";
+}
+
+// TODO: Move to geometry.js
+function Point(x,y) {
+  this.x = x;
+  this.y = y;
 }
