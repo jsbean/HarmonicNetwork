@@ -1,5 +1,5 @@
 // Constants
-const nodeWidth = 50;
+const nodeWidth = 20;
 const nodeDistance = 115;
 
 // The main entry point into the harmonic network.
@@ -52,70 +52,107 @@ function continuePath(path, redo) {
   // The current chord
   let current = path[path.length - 1];
 
-  // Make a POST request with the current chord label to the address: "neighbors"
-  post({ "label": current }, "neighbors", response => {
+  post({ "label": current }, "webview", response => {
+      const viewModel = JSON.parse(response);
+      console.log(viewModel);
+      const nodes = viewModel.nodes;
+      const edges = viewModel.edges;
 
-    // Parse response (array of type { "label": String, "weight": Number })
-    let neighbors = JSON.parse(response);
+      // Add edges (first for now for layering behind nodes)
+      // FIXME: Add edges group
+      edges.forEach(edgeViewModel => {
+        console.log(edgeViewModel);
+        const edgeView = makeEdge(
+            edgeViewModel.source,
+            edgeViewModel.destination,
+            "lightGray",
+            // edgeViewModel.color, // FIXME
+          )
+          svgContainer.appendChild(edgeView);
+      });
 
-    let weights = neighbors.map(color => color.weight)
-    let heaviest = Math.max(...weights);
-    let colorAdjust = 1 - heaviest;
+      // Add nodes (first for now for layering behind nodes)
+      // FIXME: Add nodes group
+      nodes.forEach(nodeViewModel => {
+        const nodeView = makeNode(
+          nodeViewModel.label, 
+          nodeViewModel.position, 
+          2 * nodeViewModel.radius, 
+          nodeViewModel.fillColor, // FIXME
+          () => {
+              console.log("pressed node: " + nodeViewModel.label);
+          }
+        );
+        svgContainer.appendChild(nodeView);
+      });
 
-    // FIXME: Only remove nodes that are currently present, but shan't remain
-    removeChildren(svgContainer);
-
-    // Create buttons for each neighbor node
-    for (var i = neighbors.length - 1; i >= 0; i--) {
-
-      // Extract model
-      let neighbor = neighbors[i];
-
-      // Compute position of neighbor node
-      const startAngleInRadians = -0.5 * Math.PI;
-      const angleInRadians = (i / neighbors.length) * 2 * Math.PI + startAngleInRadians;
-      const position = new Point(
-        centroid.x + nodeDistance * Math.cos(angleInRadians),
-        centroid.y + nodeDistance * Math.sin(angleInRadians)
-      );
-
-      // Create node
-      // FIXME: Only create node is currently not present, but is needed
-      const neighborNode = makeNode(
-        neighbor.label, 
-        position,
-        nodeWidth,
-        "lightgray",
-        () => { 
-          proceedWithChord(neighbor.label, path)
-        }
-      );
-
-      let colorValue = 1 - (neighbor.weight / heaviest)
-
-      let edgeConnectionPoint = new Point(
-        centroid.x + (nodeDistance - 0.5 * nodeWidth) * Math.cos(angleInRadians),
-        centroid.y + (nodeDistance - 0.5 * nodeWidth) * Math.sin(angleInRadians)
-      );
-
-      // Create arrow from source to each neighbor
-      let color = "rgb(" + 
-        Math.round(colorValue * 256) + "," +
-        Math.round(colorValue * 256) + "," +
-        Math.round(colorValue * 256) +
-      ")"
-
-      const edge = makeEdge(centroid, edgeConnectionPoint, color);
-      svgContainer.appendChild(edge);
-
-      // Compose SVG
-      svgContainer.appendChild(neighborNode);
-
-      const currentNode = makeNode(current, centroid, nodeWidth, "gray");
-      svgContainer.appendChild(currentNode);
       container.insertBefore(svgContainer, container.childNodes[0]);
-    }
-  });
+  })
+
+  // // Make a POST request with the current chord label to the address: "neighbors"
+  // post({ "label": current }, "neighbors", response => {
+
+  //   // Parse response (array of type { "label": String, "weight": Number })
+  //   let neighbors = JSON.parse(response);
+
+  //   let weights = neighbors.map(color => color.weight)
+  //   let heaviest = Math.max(...weights);
+  //   let colorAdjust = 1 - heaviest;
+
+  //   // FIXME: Only remove nodes that are currently present, but shan't remain
+  //   removeChildren(svgContainer);
+
+  //   // Create buttons for each neighbor node
+  //   for (var i = neighbors.length - 1; i >= 0; i--) {
+
+  //     // Extract model
+  //     let neighbor = neighbors[i];
+
+  //     // Compute position of neighbor node
+  //     const startAngleInRadians = -0.5 * Math.PI;
+  //     const angleInRadians = (i / neighbors.length) * 2 * Math.PI + startAngleInRadians;
+  //     const position = new Point(
+  //       centroid.x + nodeDistance * Math.cos(angleInRadians),
+  //       centroid.y + nodeDistance * Math.sin(angleInRadians)
+  //     );
+
+  //     // Create node
+  //     // FIXME: Only create node is currently not present, but is needed
+  //     const neighborNode = makeNode(
+  //       neighbor.label, 
+  //       position,
+  //       nodeWidth,
+  //       "lightgray",
+  //       () => { 
+  //         proceedWithChord(neighbor.label, path)
+  //       }
+  //     );
+
+  //     let colorValue = 1 - (neighbor.weight / heaviest)
+
+  //     let edgeConnectionPoint = new Point(
+  //       centroid.x + (nodeDistance - 0.5 * nodeWidth) * Math.cos(angleInRadians),
+  //       centroid.y + (nodeDistance - 0.5 * nodeWidth) * Math.sin(angleInRadians)
+  //     );
+
+  //     // Create arrow from source to each neighbor
+  //     let color = "rgb(" + 
+  //       Math.round(colorValue * 256) + "," +
+  //       Math.round(colorValue * 256) + "," +
+  //       Math.round(colorValue * 256) +
+  //     ")"
+
+  //     const edge = makeEdge(centroid, edgeConnectionPoint, color);
+  //     svgContainer.appendChild(edge);
+
+  //     // Compose SVG
+  //     svgContainer.appendChild(neighborNode);
+
+  //     const currentNode = makeNode(current, centroid, nodeWidth, "gray");
+  //     svgContainer.appendChild(currentNode);
+  //     container.insertBefore(svgContainer, container.childNodes[0]);
+  //   }
+  // });
 };
 
 // TODO: Refactor into class Edge
@@ -127,8 +164,8 @@ function makeEdge(source, destination, color) {
 
   // FIXME: Factor out magic number '5'
   const lineEnd = new Point(
-    destination.x - 5 * Math.cos(angle),
-    destination.y - 5 * Math.sin(angle)
+    destination.x - 2.5 * Math.cos(angle),
+    destination.y - 2.5 * Math.sin(angle)
   ); 
   const line = makeLine(source, lineEnd, color);
   const arrowhead = makeArrowhead(destination, angle, color);
@@ -143,7 +180,7 @@ function makeEdge(source, destination, color) {
 // TODO: Refactor into class Arrowhead
 function makeArrowhead(point, angle, color) {
   const arrowhead = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  let sideLength = 10;
+  let sideLength = 5;
   let angleA = angle - (Math.PI / 7);
   let angleB = angle + (Math.PI / 7);
   let ax = point.x - sideLength * Math.cos(angleA);
@@ -173,7 +210,7 @@ function makeLine(source, destination, color) {
   line.setAttribute("x2", destination.x);
   line.setAttribute("y2", destination.y);
   line.setAttribute("stroke", color);
-  line.setAttribute("stroke-width", 1.5);
+  line.setAttribute("stroke-width", 1);
   return line
 }
 

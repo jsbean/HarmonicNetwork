@@ -10,4 +10,3 @@ import Pitch
 import SpelledPitch
 
 public typealias ChordClusterNode = Tree<String,String>
-
