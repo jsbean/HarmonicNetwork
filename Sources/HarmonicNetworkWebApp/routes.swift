@@ -53,7 +53,7 @@ public func routes(_ router: Router) throws {
 
         // Layout the nodes by how they are organized hierarchically
         // TODO: Add style(inout node: ChordNodeView) closure
-        let positionedNodes = ExampleGraph.rootPositions
+        let positionedNodes = ExampleGraph.full
             .layout(at: Point(x: 200, y: 200), angle: Angle(degrees: -90), spread: 125)
             .leaves
 
