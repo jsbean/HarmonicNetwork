@@ -43,10 +43,8 @@ extension ChordClusterNode {
                     ChordNodeView(
                         label: value,
                         position: position,
-                        radius: 15, // TODO: Derive node size from screen size
-                        textColor: .white,
-                        fillColor: .gray, // TODO: Define fill color based on if its in path
-                        strokeColor: .darkGray
+                        radius: 15,
+                        style: .default
                     )
                 )
             case let .branch(_, nodes):

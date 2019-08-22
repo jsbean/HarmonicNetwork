@@ -65,14 +65,14 @@ function presentWebView(path) {
     const edges = viewModel.edges;
     
     removeChildren(svgContainer);
-    
+
     // Add edges (first for now for layering behind nodes)
     // TODO: Add edges group
     edges.forEach(edgeViewModel => {
       const edgeView = makeEdge(
           edgeViewModel.source,
           edgeViewModel.destination,
-          edgeViewModel.color,
+          edgeViewModel.style.color,
         )
         svgContainer.appendChild(edgeView);
     });
@@ -80,16 +80,17 @@ function presentWebView(path) {
     // Add nodes (first for now for layering in front of edges)
     // TODO: Add nodes group
     nodes.forEach(nodeViewModel => {
+      const closure = () => {
+        path.push(nodeViewModel.label);
+        continuePath(path,[]);
+      }
       const nodeView = makeNode(
         nodeViewModel.label, 
         nodeViewModel.position, 
         2 * nodeViewModel.radius, 
-        nodeViewModel.fillColor,
-        nodeViewModel.strokeColor,
-        () => {
-          path.push(nodeViewModel.label);
-          continuePath(path,[]);
-        }
+        nodeViewModel.style.fillColor,
+        nodeViewModel.style.strokeColor,
+        nodeViewModel.isSelectable ? closure : { }
       );
       svgContainer.appendChild(nodeView);
     });

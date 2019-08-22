@@ -10,10 +10,26 @@ import Rendering
 
 public struct EdgeView {
     // TODO: Bézier
-    let source: Point
-    let destination: Point
-    let strokeWidth: Double
-    let color: Color
+    var source: Point
+    var destination: Point
+    var style: Style
 }
 
+extension EdgeView {
+    struct Style {
+        var strokeWidth: Double
+        var color: Color
+    }
+}
+
+extension EdgeView.Style {
+    static var `default`: EdgeView.Style {
+        return EdgeView.Style(
+            strokeWidth: 1,
+            color: .lightGray
+        )
+    }
+}
+
+extension EdgeView.Style: Codable { }
 extension EdgeView: Codable { }

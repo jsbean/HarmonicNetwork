@@ -45,42 +45,47 @@ public func routes(_ router: Router) throws {
         // TODO: Make path a Stack
 
         let path = path.map { $0.label }
-        let current = path.last!
+        let selected = path.last!
+        let neighbors = bachMajor.neighbors(of: selected)
 
         // Layout the nodes by how they are organized hierarchically
         // TODO: Add style(inout node: ChordNodeView) closure
-        let laidOut = ExampleGraph.firstInversions
+        let positionedNodes = ExampleGraph.full
             .layout(at: Point(x: 200, y: 200), angle: Angle(degrees: -90), spread: 100)
             .leaves
-            .map { chordNodeView -> ChordNodeView in
-                // Apply default styling
-                var chordNodeView = ChordNodeView(
-                    label: chordNodeView.label,
-                    position: chordNodeView.position,
-                    radius: chordNodeView.radius,
-                    textColor: .white,
-                    fillColor: .lightGray,
-                    strokeColor: .black
-                )
-                if bachMajor.neighbors(of: current).contains(chordNodeView.label) {
-                    chordNodeView.strokeColor = .red
-                }
-                if path.contains(chordNodeView.label) {
-                    chordNodeView.fillColor = .black
-                }
-                if path.last == chordNodeView.label {
-                    chordNodeView.fillColor = .red
-                }
-                return chordNodeView
-            }
 
+        let styledNodes = positionedNodes.map { node -> ChordNodeView in
+            var node = node
+            // Nodes on the path
+            if path.contains(node.label) {
+                if node.label == selected {
+                    // Path Head
+                    node.style.fillColor = .red
+                    node.style.strokeColor = .red
+                } else {
+                    // Path Tail
+                    node.style.fillColor = .darkGray
+                    node.style.strokeColor = .black
+                }
+            }
+            // Neighbor nodes
+            if neighbors.contains(node.label) {
+                node.style.fillColor = .lightCoral
+                node.style.strokeColor = .coral
+                node.isSelectable = true
+            }
+            // Otherwise, leave alone
+            return node
+        }
+
+        // Create edges
         var edges: [EdgeView] = []
-        for node in laidOut {
+        for node in positionedNodes {
             for neighborLabel in bachMajor.neighbors(of: node.label) {
                 // FIXME: Form intersection upstream
-                let allowed = laidOut.map { $0.label }
+                let allowed = positionedNodes.map { $0.label }
                 guard allowed.contains(neighborLabel) else { continue }
-                let neighbor = laidOut.first { $0.label == neighborLabel }!
+                let neighbor = positionedNodes.first { $0.label == neighborLabel }!
                 // FIXME: Move to dn-m/Geometry
                 let dx = neighbor.position.x - node.position.x
                 let dy = neighbor.position.y - node.position.y
@@ -89,13 +94,13 @@ public func routes(_ router: Router) throws {
                 let edgeView = EdgeView(
                     source: node.position,
                     destination: lineEnd,
-                    strokeWidth: 3,
-                    color: .lightGray
+                    style: .default
                 )
                 edges.append(edgeView)
             }
         }
-        let viewModel = WebViewModel(nodes: laidOut, edges: edges)
+
+        let viewModel = WebViewModel(nodes: styledNodes, edges: edges)
         return viewModel
     }
 }
