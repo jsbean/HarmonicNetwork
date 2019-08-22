@@ -59,7 +59,7 @@ function continuePath(path, redo) {
 
 function presentWebView(current) {
   const svgContainer = document.getElementById("graph-view");
-  post({ "label": current }, "webview", response => {
+  post([{ "label": current }], "webview", response => {
     const viewModel = JSON.parse(response);
     console.log(viewModel);
     const nodes = viewModel.nodes;

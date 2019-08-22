@@ -40,7 +40,7 @@ public func routes(_ router: Router) throws {
             }
     }
 
-    router.post(SelectedChord.self, at: "webview") { request, value -> WebViewModel in
+    router.post([SelectedChord].self, at: "webview") { request, value -> WebViewModel in
         let cluster: ChordClusterNode = .branch((), [
             .branch((), [
                 .branch((), [
