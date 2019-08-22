@@ -59,21 +59,24 @@ public func routes(_ router: Router) throws {
 
         let styledNodes = positionedNodes.map { node -> ChordNodeView in
             var node = node
+            for function in nodeColorByHarmonicFunction.keys {
+                if function.contains(node.label) {
+                    node.style.fillColor = nodeColorByHarmonicFunction[function]!
+                }
+            }
             // Nodes on the path
             if path.contains(node.label) {
                 if node.label == selected {
                     // Path Head
-                    node.style.fillColor = .salmon
-                    node.style.strokeColor = .salmon
+                    node.style.strokeColor = .black
                 } else {
                     // Path Tail
-                    node.style.fillColor = .dimGray
+                    node.style.fillColor = .lightGray
                     node.style.strokeColor = .black
                 }
             }
             // Neighbor nodes
             if neighborsOfSelected.contains(node.label) {
-                node.style.strokeColor = .salmon
                 node.isSelectable = true
             }
 
@@ -200,3 +203,9 @@ enum ExampleGraph {
         ]),
     ])
 }
+
+let nodeColorByHarmonicFunction: [Set<String>: Color] = [
+    ["I","I6","I64","iii","vi","vi6"]: .steelBlue,
+    ["ii","ii6","IV","IV6"]: .pink,
+    ["V","V6","vii","vii6"]: .orange
+]
