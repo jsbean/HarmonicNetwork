@@ -46,35 +46,35 @@ public func routes(_ router: Router) throws {
                 .branch((), [
                     .leaf("I"),
                     .leaf("I6"),
-                    ]),
+                ]),
                 .branch((), [
                     .leaf("vi"),
                     .leaf("vi6"),
                     .leaf("vi7")
-                    ])
-                ]),
+                ])
+            ]),
             .branch((), [
                 .branch((), [
                     .leaf("IV"),
                     .leaf("IV6"),
-                    ]),
+                ]),
                 .branch((), [
                     .leaf("ii"),
                     .leaf("ii6"),
-                    ])
-                ]),
+                ])
+            ]),
             .branch((), [
                 .branch((), [
                     .leaf("V"),
                     .leaf("V6"),
-                    ]),
+                ]),
                 .branch((), [
                     .leaf("vii"),
                     .leaf("vii7"),
                     .leaf("vii43"),
-                    ])
                 ])
             ])
+        ])
         // Layout the nodes by how they are organized hierarchically
         let layedOut = cluster
             .layout(at: Point(x: 200, y: 200), angle: Angle(degrees: -90), spread: 115)
