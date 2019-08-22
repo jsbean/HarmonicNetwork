@@ -53,7 +53,7 @@ public func routes(_ router: Router) throws {
 
         // Layout the nodes by how they are organized hierarchically
         // TODO: Add style(inout node: ChordNodeView) closure
-        let positionedNodes = ExampleGraph.full
+        let positionedNodes = ExampleGraph.rootPositions
             .layout(at: Point(x: 200, y: 200), angle: Angle(degrees: -90), spread: 125)
             .leaves
 
@@ -161,68 +161,42 @@ enum ExampleGraph {
         .leaf("V"),
     ])
 
-    static var firstInversions: ChordClusterNode = .branch((), [
+    static var rootPositions: ChordClusterNode = .branch((), [
         .branch((), [
-            .branch((), [
-                .leaf("iii"),
-            ]),
-            .branch((), [
-                .leaf("vi"),
-            ]),
+            .leaf("iii"),
+            .leaf("vi"),
             .leaf("I"),
         ]),
         .branch((), [
-            .branch((), [
-                .leaf("ii"),
-            ]),
-            .branch((), [
-                .leaf("IV"),
-            ]),
+            .leaf("ii"),
+            .leaf("IV"),
         ]),
         .branch((), [
-            .branch((), [
-                .leaf("V"),
-            ]),
-            .branch((), [
-                .leaf("vii"),
-            ]),
+            .leaf("V"),
+            .leaf("vii"),
         ]),
     ])
 
     static var full: ChordClusterNode = .branch((), [
         .branch((), [
-            .branch((), [
-                .leaf("iii"),
-            ]),
-            .branch((), [
-                .leaf("vi"),
-                .leaf("vi6"),
-            ]),
-            .branch((), [
-                .leaf("I"),
-                .leaf("I6"),
-                .leaf("I64"),
-            ]),
+            .leaf("iii"),
+            .leaf("vi"),
+            .leaf("vi6"),
+            .leaf("I64"),
+            .leaf("I6"),
+            .leaf("I"),
         ]),
         .branch((), [
-            .branch((), [
-                .leaf("ii"),
-                .leaf("ii6"),
-            ]),
-            .branch((), [
-                .leaf("IV6"),
-                .leaf("IV"),
-            ]),
+            .leaf("ii"),
+            .leaf("ii6"),
+            .leaf("IV6"),
+            .leaf("IV"),
         ]),
         .branch((), [
-            .branch((), [
-                .leaf("V"),
-                .leaf("V6"),
-            ]),
-            .branch((), [
-                .leaf("vii"),
-                .leaf("vii6"),
-            ]),
+            .leaf("V"),
+            .leaf("V6"),
+            .leaf("vii"),
+            .leaf("vii6"),
         ]),
     ])
 }
