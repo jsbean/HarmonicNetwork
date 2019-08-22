@@ -21,7 +21,7 @@ The probability of going from any node to another is derived from the works of J
 
 ### Harmonic Network command line interface (CLI)
 
-`harmonic-network` is a command line interface version of the web app shown above.
+`HarmonicNetworkCLI` is a command line interface version of the web app shown above.
 
 ![Example](Documentation/img/I-vi-ii.png)
 
