@@ -27,6 +27,12 @@
     <h1 id="title-label">Harmonic Network</h1>
     <h2 id="path-label">Path</h2>
     <div id="container">
+<!--       <form name="View">
+        <input type="radio" name="view-selector" id="web-view" value="web-view" checked>
+        <label for="web-view">Web</label>
+        <input type="radio" name="view-selector" id="neighbor-view" value="neighbor-view">
+        <label for="neighbor-view">Neighbor</label>
+      </form> -->
       <svg id="graph-view"></svg>
       <div id="options">
       <div id="undo-redo">

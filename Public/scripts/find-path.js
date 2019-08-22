@@ -1,5 +1,6 @@
 // Constants
-const nodeWidth = 50;
+// FIXME: Derive from screen size
+const nodeWidth = 20;
 const nodeDistance = 115;
 
 // The main entry point into the harmonic network.
@@ -13,10 +14,9 @@ function findPath() {
 
 function continuePath(path, redo) {
 
-  // FIXME: Derive size from screen
+  // FIXME: Derive size from screen size
   const width = 400;
   const height = 400;
-  const centroid = new Point(0.5 * width, 0.5 * height);
 
   const container = document.getElementById("container");
   const svgContainer = document.getElementById("graph-view");
@@ -52,7 +52,65 @@ function continuePath(path, redo) {
   // The current chord
   let current = path[path.length - 1];
 
-  // Make a POST request with the current chord label to the address: "neighbors"
+  // TODO: Handle switching between views
+  presentWebView(path);
+  //presentNeighborView(current, path);
+};
+
+function presentWebView(path) {
+  const svgContainer = document.getElementById("graph-view");
+  post(path.map(node => { return { "label": node } }), "webview", response => {
+    const viewModel = JSON.parse(response);
+    const nodes = viewModel.nodes;
+    const edges = viewModel.edges;
+    
+    removeChildren(svgContainer);
+
+    // Add edges (first for now for layering behind nodes)
+    // TODO: Add edges group
+    edges.forEach(edgeViewModel => {
+      const edgeView = makeEdge(
+          edgeViewModel.source,
+          edgeViewModel.destination,
+          edgeViewModel.style.color,
+          edgeViewModel.style.strokeWidth
+        )
+        svgContainer.appendChild(edgeView);
+    });
+
+    // Add nodes (first for now for layering in front of edges)
+    // TODO: Add nodes group
+    nodes.forEach(nodeViewModel => {
+      const closure = () => {
+        path.push(nodeViewModel.label);
+        continuePath(path,[]);
+      }
+      const nodeView = makeNode(
+        nodeViewModel.label, 
+        nodeViewModel.position, 
+        2 * nodeViewModel.radius, 
+        nodeViewModel.style.fillColor,
+        nodeViewModel.style.strokeColor,
+        nodeViewModel.isSelectable ? closure : { }
+      );
+      svgContainer.appendChild(nodeView);
+    });
+
+    container.insertBefore(svgContainer, container.childNodes[0]);
+  })
+}
+
+function presentNeighborView(current, path) {
+  const svgContainer = document.getElementById("graph-view");
+
+  // FIXME: Derive size from screen
+  const width = 400;
+  const height = 400;
+
+  const centroid = new Point(0.5 * width, 0.5 * height);
+
+
+    // Make a POST request with the current chord label to the address: "neighbors"
   post({ "label": current }, "neighbors", response => {
 
     // Parse response (array of type { "label": String, "weight": Number })
@@ -116,9 +174,10 @@ function continuePath(path, redo) {
       container.insertBefore(svgContainer, container.childNodes[0]);
     }
   });
-};
+}
 
-function makeEdge(source, destination, color) {
+// TODO: Refactor into class Edge
+function makeEdge(source, destination, color, strokeWidth) {
 
   let dx = destination.x - source.x
   let dy = destination.y - source.y
@@ -126,22 +185,25 @@ function makeEdge(source, destination, color) {
 
   // FIXME: Factor out magic number '5'
   const lineEnd = new Point(
-    destination.x - 5 * Math.cos(angle),
-    destination.y - 5 * Math.sin(angle)
+    destination.x - 4 * Math.cos(angle),
+    destination.y - 4 * Math.sin(angle)
   ); 
-  const line = makeLine(source, lineEnd, color);
+  const line = makeLine(source, lineEnd, color, strokeWidth);
   const arrowhead = makeArrowhead(destination, angle, color);
 
   // Compose SVG
   const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  group.setAttribute("opacity", color.alpha);
   group.appendChild(line);
   group.appendChild(arrowhead);
   return group
 }
 
+// TODO: Refactor into class Arrowhead
 function makeArrowhead(point, angle, color) {
   const arrowhead = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  let sideLength = 10;
+  // FIXME: Factor out magic number
+  let sideLength = 8;
   let angleA = angle - (Math.PI / 7);
   let angleB = angle + (Math.PI / 7);
   let ax = point.x - sideLength * Math.cos(angleA);
@@ -159,22 +221,36 @@ function makeArrowhead(point, angle, color) {
     "L " + bx + " " + by + " " +
     "Z"
   );
-  arrowhead.setAttribute("fill", color);
+  arrowhead.setAttribute("fill", svgColor(color));
   return arrowhead
 }
 
-function makeLine(source, destination, color) {
+// TODO: Refactor into class Line
+function makeLine(source, destination, color, strokeWidth) {
   const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
   line.setAttribute("x1", source.x);
   line.setAttribute("y1", source.y);
   line.setAttribute("x2", destination.x);
   line.setAttribute("y2", destination.y);
-  line.setAttribute("stroke", color);
-  line.setAttribute("stroke-width", 1.5);
+  line.setAttribute("stroke", svgColor(color));
+  // FIXME: Factor out magic number
+  line.setAttribute("stroke-width", strokeWidth);
   return line
 }
 
-function makeNode(text, position, width, color, callback) {
+// Takes in a color object with r,g,b,a values in [0,1]
+// Returns a string in the form "rgba(r,g,b,a)" with values in [0,256)
+function svgColor(color) {
+  return "rgba(" + 
+    Math.floor(color.red * 256) + "," + 
+    Math.floor(color.green * 256) + "," + 
+    Math.floor(color.blue * 256) + "," + 
+    Math.floor(color.alpha * 256) + 
+  ")"
+}
+
+// TODO: Refactor into class ChordNode
+function makeNode(text, position, width, fillColor, strokeColor, callback) {
 
   // Create group container
   const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
@@ -184,8 +260,8 @@ function makeNode(text, position, width, color, callback) {
   circle.setAttribute("cx", position.x);
   circle.setAttribute("cy", position.y);
   circle.setAttribute("r", 0.5 * width);
-  circle.setAttribute("fill", color);
-  circle.setAttribute("stroke", "gray");
+  circle.setAttribute("fill", svgColor(fillColor));
+  circle.setAttribute("stroke", svgColor(strokeColor));
   // Create text label
   const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
   label.textContent = text;
@@ -201,6 +277,7 @@ function makeNode(text, position, width, color, callback) {
   group.appendChild(circle);
   group.appendChild(label);
   group.setAttribute("id", text);
+  group.setAttribute("opacity", fillColor.alpha);
   return group
 }
 
