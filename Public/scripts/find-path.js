@@ -53,27 +53,24 @@ function continuePath(path, redo) {
   let current = path[path.length - 1];
 
   // TODO: Handle switching between views
-  presentWebView(current);
+  presentWebView(path);
   //presentNeighborView(current, path);
 };
 
-function presentWebView(current) {
+function presentWebView(path) {
   const svgContainer = document.getElementById("graph-view");
-  post([{ "label": current }], "webview", response => {
+  post(path.map(node => { return { "label": node } }), "webview", response => {
     const viewModel = JSON.parse(response);
-    console.log(viewModel);
     const nodes = viewModel.nodes;
     const edges = viewModel.edges;
 
     // Add edges (first for now for layering behind nodes)
     // TODO: Add edges group
     edges.forEach(edgeViewModel => {
-      console.log(edgeViewModel);
       const edgeView = makeEdge(
           edgeViewModel.source,
           edgeViewModel.destination,
-          // "lightGray",
-          edgeViewModel.color, // FIXME
+          edgeViewModel.color,
         )
         svgContainer.appendChild(edgeView);
     });
@@ -87,7 +84,8 @@ function presentWebView(current) {
         2 * nodeViewModel.radius, 
         nodeViewModel.fillColor,
         () => {
-            console.log("pressed node: " + nodeViewModel.label);
+          path.push(nodeViewModel.label);
+          continuePath(path,[]);
         }
       );
       svgContainer.appendChild(nodeView);
@@ -247,9 +245,6 @@ function svgColor(color) {
 
 // TODO: Refactor into class ChordNode
 function makeNode(text, position, width, color, callback) {
-
-  console.log(color);
-  console.log("svg color: " + svgColor(color));
 
   // Create group container
   const group = document.createElementNS("http://www.w3.org/2000/svg", "g");

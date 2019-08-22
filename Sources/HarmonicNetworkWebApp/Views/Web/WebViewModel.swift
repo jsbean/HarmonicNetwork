@@ -24,6 +24,9 @@ typealias ChordClusterNode = Tree<(),String>
 
 extension WebViewModel: Codable { }
 
+// TODO: Color nodes based on:
+// - in path
+// - neighbor of path.top
 extension ChordClusterNode {
     public func layout(at position: Point = .zero, angle: Angle = .zero, spread: Double)
         -> Tree<(),ChordNodeView>

@@ -40,46 +40,12 @@ public func routes(_ router: Router) throws {
             }
     }
 
-    router.post([SelectedChord].self, at: "webview") { request, value -> WebViewModel in
-        let cluster: ChordClusterNode = .branch((), [
-            .branch((), [
-                .branch((), [
-                    .leaf("I"),
-                    .leaf("I6"),
-                ]),
-                .branch((), [
-                    .leaf("vi"),
-                    .leaf("vi6"),
-                    .leaf("vi7")
-                ])
-            ]),
-            .branch((), [
-                .branch((), [
-                    .leaf("IV"),
-                    .leaf("IV6"),
-                ]),
-                .branch((), [
-                    .leaf("ii"),
-                    .leaf("ii6"),
-                ])
-            ]),
-            .branch((), [
-                .branch((), [
-                    .leaf("V"),
-                    .leaf("V6"),
-                ]),
-                .branch((), [
-                    .leaf("vii"),
-                    .leaf("vii7"),
-                    .leaf("vii43"),
-                ])
-            ])
-        ])
+    router.post([SelectedChord].self, at: "webview") { request, path -> WebViewModel in
+
         // Layout the nodes by how they are organized hierarchically
-        let layedOut = cluster
-            .layout(at: Point(x: 200, y: 200), angle: Angle(degrees: -90), spread: 115)
+        let layedOut = ExampleGraph.full
+            .layout(at: Point(x: 200, y: 200), angle: Angle(degrees: -90), spread: 100)
             .leaves
-            .filter { bachMajor.nodes.contains($0.label) }
 
         var edges: [EdgeView] = []
         for node in layedOut {
@@ -110,3 +76,53 @@ public func routes(_ router: Router) throws {
 extension ChordNodeView: Content { }
 extension EdgeView: Content { }
 extension WebViewModel: Content { }
+
+enum ExampleGraph {
+    static var tonicDominant: ChordClusterNode = .branch((), [
+        .leaf("I"),
+        .leaf("V"),
+    ])
+
+    static var tonicPredominantDominant: ChordClusterNode = .branch((), [
+        .leaf("I"),
+        .leaf("IV"),
+        .leaf("V"),
+    ])
+
+    static var full: ChordClusterNode = .branch((), [
+        .branch((), [
+            .branch((), [
+                .leaf("iii"),
+            ]),
+            .branch((), [
+                .leaf("vi"),
+                .leaf("vi6"),
+            ]),
+            .branch((), [
+                .leaf("I"),
+                .leaf("I6"),
+                .leaf("I64"),
+            ]),
+        ]),
+        .branch((), [
+            .branch((), [
+                .leaf("ii"),
+                .leaf("ii6"),
+            ]),
+            .branch((), [
+                .leaf("IV"),
+                .leaf("IV6"),
+            ]),
+        ]),
+        .branch((), [
+            .branch((), [
+                .leaf("V"),
+                .leaf("V6"),
+            ]),
+            .branch((), [
+                .leaf("vii"),
+                .leaf("vii6"),
+            ]),
+        ]),
+    ])
+}

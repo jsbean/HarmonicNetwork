@@ -9,12 +9,12 @@ import Geometry
 import Rendering
 
 public struct ChordNodeView {
-    let label: String
-    let position: Point
-    let radius: Double
-    let textColor: Color
-    let fillColor: Color
-    let strokeColor: Color
+    var label: String
+    var position: Point
+    var radius: Double
+    var textColor: Color
+    var fillColor: Color
+    var strokeColor: Color
 }
 
 extension ChordNodeView: Codable { }
