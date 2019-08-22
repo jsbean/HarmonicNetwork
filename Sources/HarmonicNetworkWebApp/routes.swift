@@ -1,3 +1,4 @@
+import DataStructures
 import Geometry
 import Rendering
 import Routing
@@ -53,7 +54,7 @@ public func routes(_ router: Router) throws {
         // Layout the nodes by how they are organized hierarchically
         // TODO: Add style(inout node: ChordNodeView) closure
         let positionedNodes = ExampleGraph.full
-            .layout(at: Point(x: 200, y: 200), angle: Angle(degrees: -90), spread: 100)
+            .layout(at: Point(x: 200, y: 200), angle: Angle(degrees: -90), spread: 125)
             .leaves
 
         let styledNodes = positionedNodes.map { node -> ChordNodeView in
@@ -72,8 +73,7 @@ public func routes(_ router: Router) throws {
             }
             // Neighbor nodes
             if neighborsOfSelected.contains(node.label) {
-                node.style.fillColor = .lightCoral
-                node.style.strokeColor = .coral
+                node.style.strokeColor = .red
                 node.isSelectable = true
             }
             // Otherwise, leave alone
@@ -84,16 +84,9 @@ public func routes(_ router: Router) throws {
         // Create edges
         var edges: [EdgeView] = []
         for node in positionedNodes {
-
             let localNeighbors = bachMajor.neighbors(of: node.label)
-
-            // Ideally, the data would be clean (i.e., probabilities will sum-to-one)
-            // Here, we will multiply the weights by a factor to make-it-so
-            let weightFactor = 1 / localNeighbors.map { bachMajor.weight(from: node.label, to: $0)! }.sum
             let maxWeight = localNeighbors.map { bachMajor.weight(from: node.label, to: $0)! }.max()!
-
             for neighborLabel in localNeighbors {
-
                 // FIXME: Form intersection upstream
                 let allowed = positionedNodes.map { $0.label }
                 guard allowed.contains(neighborLabel) else { continue }
@@ -104,20 +97,30 @@ public func routes(_ router: Router) throws {
                 let dy = neighbor.position.y - node.position.y
                 let angle = Angle(radians: atan2(dy, dx))
                 let lineEnd = neighbor.position.point(at: -neighbor.radius, angle: angle)
-
                 let weight = bachMajor
-                    .weight(from: node.label, to: neighborLabel)! *
-                    weightFactor
+                    .weight(from: node.label, to: neighborLabel)!
                     .scaled(from: 0...maxWeight, to: 0...1)
-
                 // If edge is not emanating from head of the path, dim it out (you can't go there!)
                 let opacity = node.label == selected ? 1 : 0.05
-                let color = Color(white: 1 - weight, alpha: opacity)
+                var color = Color(white: 1 - weight, alpha: opacity)
+                var lineWidth = 1.0
+                // FIXME: Encapsulate
+                var pathContainsEdge = false
+                for (a,b) in path.pairs {
+                    if a == node.label && b == neighborLabel {
+                        pathContainsEdge = true
+                        break
+                    }
+                }
+                if pathContainsEdge {
+                    color = .lightSteelBlue
+                    lineWidth = 2
+                }
                 // FIXME: Engineer out magic number for strokeWidth
                 let edgeView = EdgeView(
                     source: node.position,
                     destination: lineEnd,
-                    style: EdgeView.Style(strokeWidth: 1.5, color: color)
+                    style: EdgeView.Style(strokeWidth: lineWidth, color: color)
                 )
                 edges.append(edgeView)
             }
@@ -193,8 +196,8 @@ enum ExampleGraph {
                 .leaf("ii6"),
             ]),
             .branch((), [
-                .leaf("IV"),
                 .leaf("IV6"),
+                .leaf("IV"),
             ]),
         ]),
         .branch((), [

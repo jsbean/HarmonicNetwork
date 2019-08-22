@@ -73,6 +73,7 @@ function presentWebView(path) {
           edgeViewModel.source,
           edgeViewModel.destination,
           edgeViewModel.style.color,
+          edgeViewModel.style.strokeWidth
         )
         svgContainer.appendChild(edgeView);
     });
@@ -176,7 +177,7 @@ function presentNeighborView(current, path) {
 }
 
 // TODO: Refactor into class Edge
-function makeEdge(source, destination, color) {
+function makeEdge(source, destination, color, strokeWidth) {
 
   let dx = destination.x - source.x
   let dy = destination.y - source.y
@@ -187,7 +188,7 @@ function makeEdge(source, destination, color) {
     destination.x - 4 * Math.cos(angle),
     destination.y - 4 * Math.sin(angle)
   ); 
-  const line = makeLine(source, lineEnd, color);
+  const line = makeLine(source, lineEnd, color, strokeWidth);
   const arrowhead = makeArrowhead(destination, angle, color);
 
   // Compose SVG
@@ -225,17 +226,15 @@ function makeArrowhead(point, angle, color) {
 }
 
 // TODO: Refactor into class Line
-function makeLine(source, destination, color) {
+function makeLine(source, destination, color, strokeWidth) {
   const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
   line.setAttribute("x1", source.x);
   line.setAttribute("y1", source.y);
   line.setAttribute("x2", destination.x);
   line.setAttribute("y2", destination.y);
   line.setAttribute("stroke", svgColor(color));
-  // line.setAttribute("stroke-opacity", color.alpha);
-
   // FIXME: Factor out magic number
-  line.setAttribute("stroke-width", 1);
+  line.setAttribute("stroke-width", strokeWidth);
   return line
 }
 
