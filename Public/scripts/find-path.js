@@ -1,4 +1,5 @@
 // Constants
+// FIXME: Derive from screen size
 const nodeWidth = 20;
 const nodeDistance = 115;
 
@@ -13,7 +14,7 @@ function findPath() {
 
 function continuePath(path, redo) {
 
-  // FIXME: Derive size from screen
+  // FIXME: Derive size from screen size
   const width = 400;
   const height = 400;
 
@@ -71,8 +72,8 @@ function presentWebView(current) {
       const edgeView = makeEdge(
           edgeViewModel.source,
           edgeViewModel.destination,
-          "lightGray",
-          // edgeViewModel.color, // FIXME
+          // "lightGray",
+          edgeViewModel.color, // FIXME
         )
         svgContainer.appendChild(edgeView);
     });
@@ -84,7 +85,7 @@ function presentWebView(current) {
         nodeViewModel.label, 
         nodeViewModel.position, 
         2 * nodeViewModel.radius, 
-        nodeViewModel.fillColor, // FIXME
+        nodeViewModel.fillColor,
         () => {
             console.log("pressed node: " + nodeViewModel.label);
         }
@@ -216,7 +217,7 @@ function makeArrowhead(point, angle, color) {
     "L " + bx + " " + by + " " +
     "Z"
   );
-  arrowhead.setAttribute("fill", color);
+  arrowhead.setAttribute("fill", svgColor(color));
   return arrowhead
 }
 
@@ -227,14 +228,28 @@ function makeLine(source, destination, color) {
   line.setAttribute("y1", source.y);
   line.setAttribute("x2", destination.x);
   line.setAttribute("y2", destination.y);
-  line.setAttribute("stroke", color);
+  line.setAttribute("stroke", svgColor(color));
   // FIXME: Factor out magic number
   line.setAttribute("stroke-width", 1);
   return line
 }
 
+// Takes in a color object with r,g,b,a values in [0,1]
+// Returns a string in the form "rgba(r,g,b,a)" with values in [0,256)
+function svgColor(color) {
+  return "rgba(" + 
+    Math.floor(color.red * 256) + "," + 
+    Math.floor(color.green * 256) + "," + 
+    Math.floor(color.blue * 256) + "," + 
+    Math.floor(color.alpha * 256) + 
+  ")"
+}
+
 // TODO: Refactor into class ChordNode
 function makeNode(text, position, width, color, callback) {
+
+  console.log(color);
+  console.log("svg color: " + svgColor(color));
 
   // Create group container
   const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
@@ -244,7 +259,7 @@ function makeNode(text, position, width, color, callback) {
   circle.setAttribute("cx", position.x);
   circle.setAttribute("cy", position.y);
   circle.setAttribute("r", 0.5 * width);
-  circle.setAttribute("fill", color);
+  circle.setAttribute("fill", svgColor(color));
   circle.setAttribute("stroke", "gray");
   // Create text label
   const label = document.createElementNS("http://www.w3.org/2000/svg", "text");

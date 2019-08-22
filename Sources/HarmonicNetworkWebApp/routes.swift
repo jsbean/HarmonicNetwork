@@ -97,7 +97,7 @@ public func routes(_ router: Router) throws {
                     source: node.position,
                     destination: lineEnd,
                     strokeWidth: 3,
-                    color: .green
+                    color: .lightGray
                 )
                 edges.append(edgeView)
             }
