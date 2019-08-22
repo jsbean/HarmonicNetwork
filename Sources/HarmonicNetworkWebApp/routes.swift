@@ -42,18 +42,45 @@ public func routes(_ router: Router) throws {
 
     router.post([SelectedChord].self, at: "webview") { request, path -> WebViewModel in
 
+        // TODO: Make path a Stack
+
+        let path = path.map { $0.label }
+        let current = path.last!
+
         // Layout the nodes by how they are organized hierarchically
-        let layedOut = ExampleGraph.full
+        // TODO: Add style(inout node: ChordNodeView) closure
+        let laidOut = ExampleGraph.firstInversions
             .layout(at: Point(x: 200, y: 200), angle: Angle(degrees: -90), spread: 100)
             .leaves
+            .map { chordNodeView -> ChordNodeView in
+                // Apply default styling
+                var chordNodeView = ChordNodeView(
+                    label: chordNodeView.label,
+                    position: chordNodeView.position,
+                    radius: chordNodeView.radius,
+                    textColor: .white,
+                    fillColor: .lightGray,
+                    strokeColor: .black
+                )
+                if bachMajor.neighbors(of: current).contains(chordNodeView.label) {
+                    chordNodeView.strokeColor = .red
+                }
+                if path.contains(chordNodeView.label) {
+                    chordNodeView.fillColor = .black
+                }
+                if path.last == chordNodeView.label {
+                    chordNodeView.fillColor = .red
+                }
+                return chordNodeView
+            }
 
         var edges: [EdgeView] = []
-        for node in layedOut {
+        for node in laidOut {
             for neighborLabel in bachMajor.neighbors(of: node.label) {
                 // FIXME: Form intersection upstream
-                let allowed = layedOut.map { $0.label }
+                let allowed = laidOut.map { $0.label }
                 guard allowed.contains(neighborLabel) else { continue }
-                let neighbor = layedOut.first { $0.label == neighborLabel }!
+                let neighbor = laidOut.first { $0.label == neighborLabel }!
                 // FIXME: Move to dn-m/Geometry
                 let dx = neighbor.position.x - node.position.x
                 let dy = neighbor.position.y - node.position.y
@@ -68,7 +95,7 @@ public func routes(_ router: Router) throws {
                 edges.append(edgeView)
             }
         }
-        let viewModel = WebViewModel(nodes: layedOut, edges: edges)
+        let viewModel = WebViewModel(nodes: laidOut, edges: edges)
         return viewModel
     }
 }
@@ -87,6 +114,36 @@ enum ExampleGraph {
         .leaf("I"),
         .leaf("IV"),
         .leaf("V"),
+    ])
+
+    static var firstInversions: ChordClusterNode = .branch((), [
+        .branch((), [
+            .branch((), [
+                .leaf("iii"),
+            ]),
+            .branch((), [
+                .leaf("vi"),
+            ]),
+            .branch((), [
+                .leaf("I"),
+            ]),
+        ]),
+        .branch((), [
+            .branch((), [
+                .leaf("ii"),
+            ]),
+            .branch((), [
+                .leaf("IV"),
+            ]),
+        ]),
+        .branch((), [
+            .branch((), [
+                .leaf("V"),
+            ]),
+            .branch((), [
+                .leaf("vii"),
+            ]),
+        ]),
     ])
 
     static var full: ChordClusterNode = .branch((), [

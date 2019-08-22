@@ -63,7 +63,9 @@ function presentWebView(path) {
     const viewModel = JSON.parse(response);
     const nodes = viewModel.nodes;
     const edges = viewModel.edges;
-
+    
+    removeChildren(svgContainer);
+    
     // Add edges (first for now for layering behind nodes)
     // TODO: Add edges group
     edges.forEach(edgeViewModel => {
@@ -83,6 +85,7 @@ function presentWebView(path) {
         nodeViewModel.position, 
         2 * nodeViewModel.radius, 
         nodeViewModel.fillColor,
+        nodeViewModel.strokeColor,
         () => {
           path.push(nodeViewModel.label);
           continuePath(path,[]);
@@ -244,7 +247,7 @@ function svgColor(color) {
 }
 
 // TODO: Refactor into class ChordNode
-function makeNode(text, position, width, color, callback) {
+function makeNode(text, position, width, fillColor, strokeColor, callback) {
 
   // Create group container
   const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
@@ -254,8 +257,8 @@ function makeNode(text, position, width, color, callback) {
   circle.setAttribute("cx", position.x);
   circle.setAttribute("cy", position.y);
   circle.setAttribute("r", 0.5 * width);
-  circle.setAttribute("fill", svgColor(color));
-  circle.setAttribute("stroke", "gray");
+  circle.setAttribute("fill", svgColor(fillColor));
+  circle.setAttribute("stroke", svgColor(strokeColor));
   // Create text label
   const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
   label.textContent = text;

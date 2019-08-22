@@ -37,7 +37,6 @@ public let bachMajor: WeightedDirectedGraph<String,Double> = {
     network.insertEdge(from: "iii", to: "vi6", weight: 0.5)
     // IV
     network.insertEdge(from: "IV", to: "I", weight: 0.17)
-    network.insertEdge(from: "IV", to: "IV", weight: 0.17)
     network.insertEdge(from: "IV", to: "V", weight: 0.5)
     network.insertEdge(from: "IV", to: "vii", weight: 0.17)
     // IV6
