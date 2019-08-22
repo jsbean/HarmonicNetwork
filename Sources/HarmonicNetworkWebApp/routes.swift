@@ -77,6 +77,18 @@ public func routes(_ router: Router) throws {
                 node.isSelectable = true
             }
 
+            if !path.contains(node.label) && !neighborsOfSelected.contains(node.label) {
+                let color = node.style.fillColor
+                // TODO: Make Color properties vars
+                // Or, add Color.withOpacity(...) -> Color
+                node.style.fillColor = Color(
+                    red: color.red,
+                    green: color.green,
+                    blue: color.blue,
+                    alpha: 0.25
+                )
+            }
+
             // Otherwise, leave alone
 
             return node

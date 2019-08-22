@@ -44,7 +44,8 @@ extension ChordClusterNode {
                         label: value,
                         position: position,
                         radius: 15,
-                        style: .default
+                        style: .default,
+                        isSelectable: false
                     )
                 )
             case let .branch(_, nodes):

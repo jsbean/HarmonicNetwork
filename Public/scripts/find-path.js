@@ -277,6 +277,7 @@ function makeNode(text, position, width, fillColor, strokeColor, callback) {
   group.appendChild(circle);
   group.appendChild(label);
   group.setAttribute("id", text);
+  group.setAttribute("opacity", fillColor.alpha);
   return group
 }
 
