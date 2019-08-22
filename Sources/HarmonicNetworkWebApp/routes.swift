@@ -63,20 +63,22 @@ public func routes(_ router: Router) throws {
             if path.contains(node.label) {
                 if node.label == selected {
                     // Path Head
-                    node.style.fillColor = .red
-                    node.style.strokeColor = .red
+                    node.style.fillColor = .salmon
+                    node.style.strokeColor = .salmon
                 } else {
                     // Path Tail
-                    node.style.fillColor = .darkGray
+                    node.style.fillColor = .dimGray
                     node.style.strokeColor = .black
                 }
             }
             // Neighbor nodes
             if neighborsOfSelected.contains(node.label) {
-                node.style.strokeColor = .red
+                node.style.strokeColor = .salmon
                 node.isSelectable = true
             }
+
             // Otherwise, leave alone
+
             return node
         }
 
@@ -113,7 +115,7 @@ public func routes(_ router: Router) throws {
                     }
                 }
                 if pathContainsEdge {
-                    color = .lightSteelBlue
+                    color = .springGreen
                     lineWidth = 2
                 }
                 // FIXME: Engineer out magic number for strokeWidth
