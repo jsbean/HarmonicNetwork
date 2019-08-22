@@ -192,6 +192,7 @@ function makeEdge(source, destination, color) {
 
   // Compose SVG
   const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  group.setAttribute("opacity", color.alpha);
   group.appendChild(line);
   group.appendChild(arrowhead);
   return group
@@ -231,6 +232,8 @@ function makeLine(source, destination, color) {
   line.setAttribute("x2", destination.x);
   line.setAttribute("y2", destination.y);
   line.setAttribute("stroke", svgColor(color));
+  // line.setAttribute("stroke-opacity", color.alpha);
+
   // FIXME: Factor out magic number
   line.setAttribute("stroke-width", 1);
   return line
