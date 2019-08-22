@@ -152,9 +152,7 @@ enum ExampleGraph {
             .branch((), [
                 .leaf("vi"),
             ]),
-            .branch((), [
-                .leaf("I"),
-            ]),
+            .leaf("I"),
         ]),
         .branch((), [
             .branch((), [

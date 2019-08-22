@@ -184,8 +184,8 @@ function makeEdge(source, destination, color) {
 
   // FIXME: Factor out magic number '5'
   const lineEnd = new Point(
-    destination.x - 2.5 * Math.cos(angle),
-    destination.y - 2.5 * Math.sin(angle)
+    destination.x - 4 * Math.cos(angle),
+    destination.y - 4 * Math.sin(angle)
   ); 
   const line = makeLine(source, lineEnd, color);
   const arrowhead = makeArrowhead(destination, angle, color);
@@ -202,7 +202,7 @@ function makeEdge(source, destination, color) {
 function makeArrowhead(point, angle, color) {
   const arrowhead = document.createElementNS("http://www.w3.org/2000/svg", "path");
   // FIXME: Factor out magic number
-  let sideLength = 5;
+  let sideLength = 8;
   let angleA = angle - (Math.PI / 7);
   let angleB = angle + (Math.PI / 7);
   let ax = point.x - sideLength * Math.cos(angleA);
