@@ -8,9 +8,9 @@ Find your way through a network of harmony.
 
 ## Products
 
-### Harmonic Network Webapp
+### Harmonic Network web app
 
-Navigate to the Harmonic Network webapp [here](https://harmonic-network.herokuapp.com).
+Navigate to the Harmonic Network web app [here](https://harmonic-network.herokuapp.com).
 
 Each node in this network represents a chord (expressed in a [roman numeral notation](https://en.wikipedia.org/wiki/Roman_numeral_analysis)). You can build up a chord progression by selecting one of the nodes connected to the currently highlighted one. You will start on the tonic (`I`) chord, and it's up to you to make some music from there.
 
@@ -21,7 +21,7 @@ The probability of going from any node to another is derived from the works of J
 
 ### Harmonic Network command line interface (CLI)
 
-`harmonic-network` is a command line interface version of the webapp shown above.
+`harmonic-network` is a command line interface version of the web app shown above.
 
 ![Example](Documentation/img/I-vi-ii.png)
 
@@ -67,7 +67,7 @@ git clone https://github.com/jsbean/HarmonicNetwork && cd HarmonicNetwork
 
 There are several targets in this Swift Package:
 
-- `HarmonicNetworkCore` contains shared code used by the command line interface and the webapp
+- `HarmonicNetworkCore` contains shared code used by the command line interface and the web app
 - `HarmonicNetworkCLI` produces the executable for the command line interface
 - `HarmonicNetworkWebApp` contains the code used to build the web app
 - `HarmonicNetworkServer` produces the executable which serves the web app
