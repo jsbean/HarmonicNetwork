@@ -41,7 +41,7 @@ extension ChordNodeView.Style {
         return ChordNodeView.Style(
             textColor: .white,
             fillColor: .lightGray,
-            strokeColor: .darkGray
+            strokeColor: .gray
         )
     }
 }
