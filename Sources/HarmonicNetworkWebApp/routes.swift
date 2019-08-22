@@ -59,9 +59,9 @@ public func routes(_ router: Router) throws {
 
         let styledNodes = positionedNodes.map { node -> ChordNodeView in
             var node = node
-            for function in nodeColorByHarmonicFunction.keys {
+            for (function,color) in nodeColorByHarmonicFunction {
                 if function.contains(node.label) {
-                    node.style.fillColor = nodeColorByHarmonicFunction[function]!
+                    node.style.fillColor = color
                 }
             }
             // Nodes on the path
