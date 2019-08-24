@@ -24,7 +24,10 @@ extension Ionian {
         inversions: [I6, I64]
     )
 
-    public static let I6 = InversionNode(label: "I6", descriptor: .major)
+    public static let I6 = InversionNode(
+        label: "I6",
+        descriptor: ChordDescriptor.major.inversion(1)
+    )
 
     // MARK: vi
 
@@ -62,6 +65,7 @@ extension Ionian {
     // MARK: ii
 
     public static let ii = RootPositionNode(label: "ii", descriptor: .minor, inversions: [ii6])
+
     public static let ii6 = InversionNode(
         label: "ii6",
         descriptor: ChordDescriptor.minor.inversion((1))
