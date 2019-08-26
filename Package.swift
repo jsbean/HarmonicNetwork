@@ -5,7 +5,7 @@ let package = Package(
     name: "HarmonicNetwork",
     dependencies: [
         .package(url: "https://github.com/dn-m/Structure", from: "0.24.1"),
-        .package(url: "https://github.com/dn-m/Music", from: "0.17.0"),
+        .package(url: "https://github.com/dn-m/Music", from: "0.17.1"),
         .package(url: "https://github.com/dn-m/NotationModel", from: "0.9.0"),
         .package(url: "https://github.com/dn-m/Math", from: "0.8.0"),
         .package(url: "https://github.com/dn-m/Graphics", from: "0.4.0"),
